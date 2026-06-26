@@ -22,6 +22,11 @@ public:
     AnimationState getState() const { return m_state; }
     bool isFinished() const { return m_state == AnimationState::IDLE; }
 
+    // 렌더러가 사용할 getter 메서드
+    OKLCHColor getStartOKLCHColor() const { return m_startColor; }
+    OKLCHColor getTargetOKLCHColor() const { return m_targetColor; }
+    float getProgress() const { return (m_state == AnimationState::IDLE || m_transitionDuration <= 0.0f) ? 1.0f : std::min(1.0f, (m_elapsedTime / m_transitionDuration)); }
+
 private:
     // OKLCH 색상 공간에서 두 색상을 부드럽게 이어주는 헬퍼 함수
     OKLCHColor interpolateColor(const OKLCHColor& start, const OKLCHColor& target, float progress);
