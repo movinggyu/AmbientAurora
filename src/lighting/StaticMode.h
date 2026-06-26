@@ -15,6 +15,7 @@ public:
 
     // ILightingMode 인터페이스 구현
     RGBColor getCurrentColor() const override;
+    RGBColor getAndSetNextColor() override;
 
     // 색상 설정 (슬라이더는 색상, 밝기, 채도를 사용하기 때문에 OKLCHColor를 사용, 구현 시 내부적으로 RGB로 변환하여 저장)
     void setColor(const OKLCHColor& color);

@@ -16,6 +16,7 @@ public:
 
 
     RGBColor getCurrentColor() const override;
+    RGBColor getAndSetNextColor() override;
 
     bool isHueInRange(float hue) const;
     void setStartHue(float hue);

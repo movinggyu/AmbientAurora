@@ -2,7 +2,7 @@
 
 namespace AmbientAurora {
 
-StaticMode::StaticMode() : m_color(255, 255, 255) { // Default to white
+StaticMode::StaticMode() : m_color(255, 255, 255) { // 기본값: 하얀색
 }
 
 StaticMode::StaticMode(const float hue, const OKLCHColor& prevColor) : m_color(OKLCHColor(prevColor.l, prevColor.c, hue)) {
@@ -10,6 +10,10 @@ StaticMode::StaticMode(const float hue, const OKLCHColor& prevColor) : m_color(O
 
 RGBColor StaticMode::getCurrentColor() const {
     return OKLCHToRGB(m_color);
+}
+
+RGBColor StaticMode::getAndSetNextColor() {
+    return OKLCHToRGB(m_color); // Static모드는 항상 현재 색상을 반환
 }
 
 void StaticMode::setColor(const OKLCHColor& color) {

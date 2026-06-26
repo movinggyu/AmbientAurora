@@ -12,6 +12,7 @@ public:
     GradientMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
 
     RGBColor getCurrentColor() const override;
+    RGBColor getAndSetNextColor() override;
 
     bool isHueInRange(float hue) const;
     void setStartHue(float hue);
@@ -19,7 +20,6 @@ public:
     void setTransitionMode(AmbientAurora::TransitionMode transitionMode);
     void setDeltaHue(float deltaHue);
     float calculateNextHue();
-    void updateCurrentColor();
 
 private:
     float m_startHue; // 시작 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)

@@ -28,6 +28,11 @@ namespace AmbientAurora {
         return OKLCHToRGB(m_currentColor);
     }
 
+    RGBColor GradientMode::getAndSetNextColor() {
+        m_currentColor.h = calculateNextHue();
+        return OKLCHToRGB(m_currentColor);
+    }
+
     bool GradientMode::isHueInRange(float hue) const {
         // 현재 hue가 시작색상 ~ 끝색상 범위 내에 있는지 확인
         if (m_startHue <= m_endHue) {
@@ -91,11 +96,6 @@ namespace AmbientAurora {
         
         return nextHue;
     }
-
-    void GradientMode::updateCurrentColor() {
-        // 현재 색상을 업데이트하는 메서드, m_deltaHue 만큼 변화시켜서 새로운 hue를 계산하고 m_currentColor를 업데이트
-        m_currentColor.h = calculateNextHue();
-    }
 } // namespace AmbientAurora
 
 
@@ -124,7 +124,7 @@ int main() {
         // 2. 옆에 수치 데이터도 함께 출력해 줍니다.
         std::cout << "  ->  R=" << r << ", G=" << g << ", B=" << b << std::endl;
                   
-        gradientMode.updateCurrentColor();
+        gradientMode.getAndSetNextColor();
     }
 
     return 0;

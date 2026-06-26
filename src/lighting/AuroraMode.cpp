@@ -38,6 +38,11 @@ namespace AmbientAurora {
         return OKLCHToRGB(m_currentColor);
     }
 
+    RGBColor AuroraMode::getAndSetNextColor() {
+        updateColor();
+        return OKLCHToRGB(m_currentColor);
+    }
+
     bool AuroraMode::isHueInRange(float hue) const {
         if (startHue <= endHue) {
             return (hue >= startHue && hue <= endHue);

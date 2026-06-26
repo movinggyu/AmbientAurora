@@ -9,8 +9,11 @@ namespace AmbientAurora {
         // 가상 소멸자
         virtual ~ILightingMode() = default;
 
-        // 화면에 그려야 할 색을 반환한다.)
+        // 현재 색을 반환한다.
         virtual RGBColor getCurrentColor() const = 0;
+
+        // 다음 목표 색을 반환하고 현재 색상을 업데이트한다.
+        virtual RGBColor getAndSetNextColor() = 0;
     };
 } // namespace AmbientAurora
 
