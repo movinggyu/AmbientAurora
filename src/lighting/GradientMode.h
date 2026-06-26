@@ -24,8 +24,8 @@ public:
 private:
     float m_startHue; // 시작 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
     float m_endHue; // 끝 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
-    OKLCHColor m_currentColor; // 현재 색상(OKLCH인 이유는 Hue를 기반으로 색상을 계산하기 위해. RGB로 변환하여 반환)
     float m_deltaHue; // 변화량
+    OKLCHColor m_currentColor; // 현재 색상(OKLCH인 이유는 Hue를 기반으로 색상을 계산하기 위해. RGB로 변환하여 반환)
     AmbientAurora::TransitionMode m_transitionMode; // 디졸브, 와이프, 센터 등 트랜지션 방법
 
 };
