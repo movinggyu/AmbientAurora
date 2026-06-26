@@ -3,7 +3,7 @@
 
 #include "ILightingMode.h"
 #include "../core/Color.h"
-#include "../core/TransitionMode.h"
+#include "../core/Types.h"
 
 namespace AmbientAurora {
 class GradientMode : public ILightingMode {
