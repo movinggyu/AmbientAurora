@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include "ScreenRenderer.h"
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 namespace AmbientAurora {
 
@@ -61,12 +63,12 @@ void main()
     vec3 newColor = sampleColor(u_NewColors, u_NewColorCount, TexCoord);
 
     float mask = 0.0; // 마스크 값 초기화
-    float edgeSmooth = 0.05; // 가장자리 부드럽게 처리 (0.0 ~ 1.0)
+    float edgeSmooth = 1.0; // 가장자리 부드럽게 처리 (0.0 ~ 1.0)
     
     // 전환 모드에 따라 색상 혼합 처리 (DISSOLVE, WIPE, CENTER 등)
     if (u_TransitionMode == 0) { // DISSOLVE
         float noise = rand(TexCoord * 100.0); 
-        mask = smoothstep(u_Progress - edgeSmooth, u_Progress + edgeSmooth, noise)
+        mask = smoothstep(u_Progress - edgeSmooth, u_Progress + edgeSmooth, noise);
     }
     else if (u_TransitionMode == 1) { // WIPE
         mask = smoothstep(u_Progress - edgeSmooth, u_Progress + edgeSmooth, TexCoord.x);
@@ -74,7 +76,8 @@ void main()
     else if (u_TransitionMode == 2) { // CENTER
         float distToCenter = distance(TexCoord, vec2(0.5));
         float maxDist = 0.7071;
-        mask = smoothstep(u_Progress - edgeSmooth, u_Progress * maxDist + edgeSmooth, distToCenter);
+        float currentRadius = u_Progress * maxDist;
+        mask = smoothstep(u_Progress - edgeSmooth, currentRadius + edgeSmooth, distToCenter);
     } else {
         mask = 0.0;
     }

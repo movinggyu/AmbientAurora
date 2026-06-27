@@ -8,7 +8,7 @@ namespace AmbientAurora {
         float b;
 
         RGBColor() : r(0), g(0), b(0) {}
-        RGBColor(int red, int green, int blue) : r(red), g(green), b(blue) {}
+        RGBColor(float red, float green, float blue) : r(red), g(green), b(blue) {}
     };
 
     struct OKLCHColor { // OKLCH 색상 구조체 (L: 0.0f ~ 1.0f, C: 0.0f ~ 1.0f, H: 0.0f ~ 360.0f)
