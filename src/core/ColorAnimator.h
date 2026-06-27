@@ -22,7 +22,7 @@ public:
     AnimationState getState() const { return m_state; }
     bool isFinished() const { return m_state == AnimationState::IDLE; }
 
-    // 렌더러가 사용할 getter 메서드
+    // getter 메서드
     OKLCHColor getStartOKLCHColor() const { return m_startColor; }
     OKLCHColor getTargetOKLCHColor() const { return m_targetColor; }
     float getProgress() const { return (m_state == AnimationState::IDLE || m_transitionDuration <= 0.0f) ? 1.0f : std::min(1.0f, (m_elapsedTime / m_transitionDuration)); }

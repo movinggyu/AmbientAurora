@@ -2,10 +2,10 @@
 #define AMBIENT_AURORA_COLOR_H
 
 namespace AmbientAurora {
-    struct RGBColor { // RGB 색상 구조체 (각 채널 0 ~ 255)
-        int r;
-        int g;
-        int b;
+    struct RGBColor { // RGB 색상 구조체 (각 채널 0.0f ~ 1.0f)
+        float r;
+        float g;
+        float b;
 
         RGBColor() : r(0), g(0), b(0) {}
         RGBColor(int red, int green, int blue) : r(red), g(green), b(blue) {}

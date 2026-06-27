@@ -6,8 +6,8 @@ namespace AmbientAurora {
     // 위 주석에 따라 순차적으로 구현
     OKLCHColor RGBToOKLCH(const RGBColor& rgb) {
         // 1단계: RGB를 선형 공간으로 변환
-        auto linearize = [](int channel) -> float {
-            float c = channel / 255.0f;
+        auto linearize = [](float channel) -> float {
+            float c = std::max(0.0f, std::min(1.0f, channel));
             return (c <= 0.04045f) ? (c / 12.92f) : std::pow((c + 0.055f) / 1.055f, 2.4f);
         };
 
@@ -68,10 +68,10 @@ namespace AmbientAurora {
         float b_lin = -0.0041960863f * L - 0.7034186147f * M + 1.7076147010f * S;
 
         // 1단계: 선형 RGB를 sRGB로 변환
-        auto delinearize = [](float channel) -> int {
+        auto delinearize = [](float channel) -> float {
             channel = std::max(0.0f, std::min(1.0f, channel)); // Clamp to [0,1]
-            return (channel <= 0.0031308f) ? static_cast<int>(channel * 12.92f * 255.0f + 0.5f)
-                                           : static_cast<int>((1.055f * std::pow(channel, 1 / 2.4f) - 0.055f) * 255.0f + 0.5f);
+            return (channel <= 0.0031308f) ? (channel * 12.92f)
+                                           : (1.055f * std::pow(channel, 1.0f / 2.4f) - 0.055f);
         };
         return RGBColor(delinearize(r_lin), delinearize(g_lin), delinearize(b_lin));
     }
