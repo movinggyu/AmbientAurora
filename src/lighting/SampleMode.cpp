@@ -1,11 +1,11 @@
-#include "GradientMode.h"
+#include "SampleMode.h"
 #include <algorithm>
 #include <iostream>
 #include <cmath>
 
 namespace AmbientAurora {
     // 기본 생성자에서 시작 색상은 0도 빨간색, 끝 색상은 360도 빨간색으로 설정
-    GradientMode::GradientMode()
+    SampleMode::SampleMode()
         : m_startHue(0.0f), // 기본 시작 색상 (빨간색)
           m_endHue(360.0f), // 기본 끝 색상 (빨간색)
           m_deltaHue(1.0f), // 기본 변화량
@@ -15,7 +15,7 @@ namespace AmbientAurora {
     }
 
     // 생성자에서 시작 색상, 끝 색상, 변화량, 트랜지션 모드를 설정
-    GradientMode::GradientMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode)
+    SampleMode::SampleMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode)
         : m_startHue(startHue),
           m_endHue(endHue),
           m_deltaHue(deltaHue),
@@ -24,16 +24,16 @@ namespace AmbientAurora {
         m_currentColor = OKLCHColor(prevColor.l, prevColor.c, m_startHue); // 초기 현재 색상 설정
     }
 
-    RGBColor GradientMode::getCurrentColor() const {
+    RGBColor SampleMode::getCurrentColor() const {
         return OKLCHToRGB(m_currentColor);
     }
 
-    RGBColor GradientMode::getAndSetNextColor() {
+    RGBColor SampleMode::getAndSetNextColor() {
         m_currentColor.h = calculateNextHue();
         return OKLCHToRGB(m_currentColor);
     }
 
-    bool GradientMode::isHueInRange(float hue) const {
+    bool SampleMode::isHueInRange(float hue) const {
         // 현재 hue가 시작색상 ~ 끝색상 범위 내에 있는지 확인
         if (m_startHue <= m_endHue) {
             return (hue >= m_startHue && hue <= m_endHue);
@@ -42,7 +42,7 @@ namespace AmbientAurora {
         }
     }
 
-    void GradientMode::setStartHue(float hue) {
+    void SampleMode::setStartHue(float hue) {
         m_startHue = hue;
         // 현재 hue가 시작색상 ~ 끝색상 범위의 바깥일때만 현재 색상을 시작색상으로 초기화
         if (!isHueInRange(m_currentColor.h)) {
@@ -50,7 +50,7 @@ namespace AmbientAurora {
         }
     }
 
-    void GradientMode::setEndHue(float hue) {
+    void SampleMode::setEndHue(float hue) {
         m_endHue = hue;
         // 현재 hue가 시작색상 ~ 끝색상 범위의 바깥일때만 현재 색상을 끝색상으로 초기화
         if (!isHueInRange(m_currentColor.h)) {
@@ -58,15 +58,15 @@ namespace AmbientAurora {
         }
     }
 
-    void GradientMode::setTransitionMode(AmbientAurora::TransitionMode transitionMode) {
+    void SampleMode::setTransitionMode(AmbientAurora::TransitionMode transitionMode) {
         m_transitionMode = transitionMode;
     }
 
-    void GradientMode::setDeltaHue(float deltaHue) {
+    void SampleMode::setDeltaHue(float deltaHue) {
         m_deltaHue = deltaHue;
     }
 
-    float GradientMode::calculateNextHue() {// 총 이동해야 할 Hue의 거리 계산 (360도 순환 고려)
+    float SampleMode::calculateNextHue() {// 총 이동해야 할 Hue의 거리 계산 (360도 순환 고려)
         float totalRange = (m_endHue >= m_startHue) ? (m_endHue - m_startHue) : (360.0f - m_startHue + m_endHue);
         
         // 시작 색상이 끝 색상과 같다면 변화 없음
@@ -104,14 +104,14 @@ namespace AmbientAurora {
 /*
 int main() {
     // 앞서 안내해 드린 안전한 채도(0.15f)로 세팅하면 색상이 더 다채롭게 보입니다.
-    AmbientAurora::GradientMode gradientMode(
+    AmbientAurora::SampleMode sampleMode(
         0.0f, 360.0f, 10.0f, 
         AmbientAurora::OKLCHColor(0.5f, 0.1f, 0.0f), 
         AmbientAurora::TransitionMode::DISSOLVE
     );
 
     for (int i = 0; i < 40; ++i) {
-        AmbientAurora::RGBColor currentColor = gradientMode.getCurrentColor();
+        AmbientAurora::RGBColor currentColor = sampleMode.getCurrentColor();
         
         int r = static_cast<int>(currentColor.r);
         int g = static_cast<int>(currentColor.g);
@@ -124,7 +124,7 @@ int main() {
         // 2. 옆에 수치 데이터도 함께 출력해 줍니다.
         std::cout << "  ->  R=" << r << ", G=" << g << ", B=" << b << std::endl;
                   
-        gradientMode.getAndSetNextColor();
+        sampleMode.getAndSetNextColor();
     }
 
     return 0;

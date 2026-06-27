@@ -1,15 +1,15 @@
-#ifndef AMBIENT_AURORA_GRADIENTMODE_H
-#define AMBIENT_AURORA_GRADIENTMODE_H
+#ifndef AMBIENT_AURORA_SAMPLEMODE_H
+#define AMBIENT_AURORA_SAMPLEMODE_H
 
 #include "ILightingMode.h"
 #include "../core/Color.h"
 #include "../core/Types.h"
 
 namespace AmbientAurora {
-class GradientMode : public ILightingMode {
+class SampleMode : public ILightingMode {
 public:
-    GradientMode();
-    GradientMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
+    SampleMode();
+    SampleMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
 
     RGBColor getCurrentColor() const override;
     RGBColor getAndSetNextColor() override;
@@ -31,4 +31,4 @@ private:
 };
 } // namespace AmbientAurora
 
-#endif // AMBIENT_AURORA_GRADIENTMODE_H
+#endif // AMBIENT_AURORA_SAMPLEMODE_H
