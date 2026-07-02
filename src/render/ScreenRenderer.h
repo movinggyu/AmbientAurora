@@ -45,6 +45,7 @@ private:
     // 다중 색상 배열 및 공간 전환 제어를 위한 Uniform 위치 캐싱
     int m_locTransitionMode;
     int m_locProgress;
+    int m_locAspectRatio;
     int m_locOldColors;       // 셰이더 내 vec3 u_OldColors[4] 배열의 위치
     int m_locOldColorCount;   // 이전 색상 개수
     int m_locNewColors;       // 셰이더 내 vec3 u_NewColors[4] 배열의 위치

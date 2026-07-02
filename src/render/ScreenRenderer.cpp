@@ -28,6 +28,7 @@ in vec2 TexCoord;
 
 uniform int u_TransitionMode; // 0: DISSOLVE, 1: WIPE, 2: CENTER etc.
 uniform float u_Progress; // 0.0 ~ 1.0
+uniform float u_AspectRatio; // 화면 비율 (width / height)
 
 uniform vec3 u_OldColors[4]; // 이전 색상 배열
 uniform int u_OldColorCount; // 이전 색상 개수
@@ -67,17 +68,26 @@ void main()
     
     // 전환 모드에 따라 색상 혼합 처리 (DISSOLVE, WIPE, CENTER 등)
     if (u_TransitionMode == 0) { // DISSOLVE
-        float noise = rand(TexCoord * 100.0); 
-        mask = smoothstep(u_Progress - edgeSmooth, u_Progress + edgeSmooth, noise);
+        mask = 1.0 - u_Progress;
     }
     else if (u_TransitionMode == 1) { // WIPE
-        mask = smoothstep(u_Progress - edgeSmooth, u_Progress + edgeSmooth, TexCoord.x);
+        float extendProgress = u_Progress * (1.0 + edgeSmooth * 2.0) - edgeSmooth; // 가장자리 부드럽게 처리
+        mask = smoothstep(extendProgress - edgeSmooth, extendProgress + edgeSmooth, TexCoord.x);
     }
     else if (u_TransitionMode == 2) { // CENTER
-        float distToCenter = distance(TexCoord, vec2(0.5));
-        float maxDist = 0.7071;
-        float currentRadius = u_Progress * maxDist;
-        mask = smoothstep(u_Progress - edgeSmooth, currentRadius + edgeSmooth, distToCenter);
+        float centerSmooth = edgeSmooth * 2.0; // 화면 비율에 따라 가장자리 부드럽게 처리
+
+        vec2 correctedTexCoord = vec2(TexCoord.x * u_AspectRatio, TexCoord.y);
+        vec2 correctedCenter = vec2(0.5 * u_AspectRatio, 0.5);
+
+        float distToCenter = length(correctedTexCoord - correctedCenter);
+        float maxDist = 0.5 * sqrt(u_AspectRatio * u_AspectRatio + 1.0); // 화면 대각선 거리의 절반
+
+        float minRadius = -centerSmooth;
+        float maxRadius = maxDist + centerSmooth;
+        float currentRadius = mix(minRadius, maxRadius, u_Progress);
+        
+        mask = smoothstep(currentRadius - centerSmooth, currentRadius + centerSmooth, distToCenter);
     } else {
         mask = 0.0;
     }
@@ -111,6 +121,7 @@ bool ScreenRenderer::initialize(int width, int height) {
     // Uniform 캐싱
     m_locTransitionMode = glGetUniformLocation(m_shaderProgram, "u_TransitionMode");
     m_locProgress = glGetUniformLocation(m_shaderProgram, "u_Progress");
+    m_locAspectRatio = glGetUniformLocation(m_shaderProgram, "u_AspectRatio");
     m_locOldColors = glGetUniformLocation(m_shaderProgram, "u_OldColors");
     m_locOldColorCount = glGetUniformLocation(m_shaderProgram, "u_OldColorCount");
     m_locNewColors = glGetUniformLocation(m_shaderProgram, "u_NewColors");
@@ -160,6 +171,14 @@ void ScreenRenderer::renderFrame(TransitionMode mode, float progress,
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(m_shaderProgram);
+
+    // 화면 비율 계산 및 Uniform 설정
+    int viewport[4];
+    glGetIntegerv(GL_VIEWPORT, viewport);
+    float currentWidth = static_cast<float>(viewport[2]);
+    float currentHeight = static_cast<float>(viewport[3]);
+    float aspectRatio = (currentHeight > 0.0f) ? (currentWidth / currentHeight) : 1.0f;
+    glUniform1f(m_locAspectRatio, aspectRatio);
 
     // Uniform 설정
     glUniform1i(m_locTransitionMode, static_cast<int>(mode));
