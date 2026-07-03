@@ -18,11 +18,13 @@ public:
 
     // 화면 렌더링
     // mode: 전환 모드 (DISSOLVE, WIPE, CENTER)
-    // oldColors: 이전 모드의 현재 색상 배열 (단색이면 크기 1, 그라데이션이면 2~4)
-    // newColors: 새롭게 전환될 모드의 현재 색상 배열
+    // oldColor: 이전 모드의 현재 색상
+    // newColor: 새롭게 전환될 모드의 현재 색상
     void renderFrame(TransitionMode mode, float progress, 
-                     const std::vector<RGBColor>& oldColors, 
-                     const std::vector<RGBColor>& newColors);
+                     const RGBColor& oldColor, 
+                     const RGBColor& newColor,
+                    bool isGradient,
+                    float hueOffset);
 
 private:
     // OpenGL 셰이더 컴파일 및 프로그램 링크
@@ -46,10 +48,10 @@ private:
     int m_locTransitionMode;
     int m_locProgress;
     int m_locAspectRatio;
-    int m_locOldColors;       // 셰이더 내 vec3 u_OldColors[4] 배열의 위치
-    int m_locOldColorCount;   // 이전 색상 개수
-    int m_locNewColors;       // 셰이더 내 vec3 u_NewColors[4] 배열의 위치
-    int m_locNewColorCount;   // 새 색상 개수
+    int m_locOldColor;
+    int m_locNewColor;
+    int m_locHueoffset;
+    int m_locIsgradient;
 };
 
 } // namespace AmbientAurora

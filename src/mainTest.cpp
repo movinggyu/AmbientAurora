@@ -45,18 +45,11 @@ int main() {
     }
 
     // 5. 테스트용 더미 색상 데이터 세팅
-    // 이전 모드 색상: 빨강 -> 주황 -> 노랑 (그라데이션 배열)
-    std::vector<AmbientAurora::RGBColor> oldColors = {
-        {1.0f, 0.0f, 0.0f}, // Red
-        {1.0f, 0.5f, 0.0f}, // Orange
-        {1.0f, 1.0f, 0.0f}  // Yellow
-    };
+    // 이전 색상: 빨강
+    AmbientAurora::RGBColor oldColor(1.0f, 0.0f, 0.0f); // Red
 
-    // 새 모드 색상: 파랑 -> 청록 (그라데이션 배열)
-    std::vector<AmbientAurora::RGBColor> newColors = {
-        {0.0f, 0.0f, 1.0f}, // Blue
-        {0.0f, 1.0f, 1.0f}  // Cyan
-    };
+    // 새 색상: 파랑
+    AmbientAurora::RGBColor newColor(0.0f, 0.0f, 1.0f); // Blue
 
     // 6. 상태 제어 변수들
     float progress = 0.0f;
@@ -85,11 +78,11 @@ int main() {
             currentModeIndex = (currentModeIndex + 1) % 3;
             
             // 시각적 재미를 위해 끝날 때마다 이전/새 색상을 스왑해줍니다.
-            std::swap(oldColors, newColors);
+            std::swap(oldColor, newColor);
         }
 
         // 화면 렌더링 프레임 호출
-        renderer.renderFrame(modes[currentModeIndex], progress, oldColors, newColors);
+        renderer.renderFrame(modes[currentModeIndex], progress, oldColor, newColor, true, 1.0f);
 
         // 이벤트 및 더블 버퍼 교체
         glfwSwapBuffers(window);
