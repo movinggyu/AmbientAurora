@@ -117,8 +117,8 @@ void main()
         vec2 centerDist = abs(TexCoord - vec2(0.5));
         const float hueOffset = 0.8; // 그라데이션 강도 (라디안 단위)
         
-        float plusField = centerDist.x * 0.5 + centerDist.y * 0.3;
-        float centerMask = smoothstep(u_GradientFeather, 0.0, plusField);
+        float plusField = centerDist.x * 0.5 + centerDist.y * 0.7;
+        float centerMask = smoothstep(0.0, u_GradientFeather, plusField);
 
         // 네 개의 모서리(Corner)별 고유한 Hue offset 가중치
         float tlOffset = hueOffset;          // Top-Left (왼쪽 위)
@@ -135,11 +135,11 @@ void main()
         float verticalGrad = (TexCoord.y - 0.5) * 2.0 * hueOffset;
         
         // 기존 모서리 색상(50%)과 세로 그라데이션(50%)을 반반씩 섞어 아치형 느낌을 냅니다.
-        float combinedOffset = mix(finalCornerOffset, verticalGrad, 0.9); // 마지막 인자가 클수록 세로 그라데이션이 강해집니다.
+        float combinedOffset = mix(finalCornerOffset, verticalGrad, 0.5); // 마지막 인자가 클수록 세로 그라데이션이 강해집니다.
 
         // 최종 LCH의 Hue(z)값 적용
-        oldLCH.z = mod(oldLCH.z + mix(combinedOffset, 0.0, centerMask), 6.28318530717);
-        newLCH.z = mod(newLCH.z + mix(combinedOffset, 0.0, centerMask), 6.28318530717);
+        oldLCH.z = mod(oldLCH.z + mix(0.0, combinedOffset, centerMask), 6.28318530717);
+        newLCH.z = mod(newLCH.z + mix(0.0, combinedOffset, centerMask), 6.28318530717);
     }
 
     float mask = 0.0; // 마스크 값 초기화

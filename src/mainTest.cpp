@@ -53,6 +53,7 @@ int main() {
 
     // 6. 상태 제어 변수들
     float progress = 0.0f;
+    float gradientFeather = 0.001f;
     int currentModeIndex = 0;
     // Types.h의 순서에 맞춰 캐스팅 처리 (0: DISSOLVE, 1: WIPE, 2: CENTER)
     AmbientAurora::TransitionMode modes[] = {
@@ -72,6 +73,12 @@ int main() {
 
         // progress 속도 조절 (2초 동안 0.0에서 1.0까지 증가)
         progress += deltaTime * 0.5f; 
+        gradientFeather += deltaTime * 0.1f;
+
+        if (gradientFeather > 1.0f) {
+            gradientFeather = 0.001f;
+        }
+
         if (progress > 1.0f) {
             progress = 0.0f;
             // 효과가 끝나면 다음 변형 모드로 전환하며 무한 반복
@@ -79,10 +86,12 @@ int main() {
             
             // 시각적 재미를 위해 끝날 때마다 이전/새 색상을 스왑해줍니다.
             std::swap(oldColor, newColor);
+
+            std::cout << "Transition Mode: " << static_cast<int>(modes[currentModeIndex]) << ", Gradient Feather: " << gradientFeather << std::endl;
         }
 
         // 화면 렌더링 프레임 호출
-        renderer.renderFrame(modes[currentModeIndex], progress, oldColor, newColor, true, 0.8f);
+        renderer.renderFrame(modes[currentModeIndex], progress, oldColor, newColor, true, gradientFeather);
 
         // 이벤트 및 더블 버퍼 교체
         glfwSwapBuffers(window);
