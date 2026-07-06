@@ -82,7 +82,7 @@ int main() {
         }
 
         // 화면 렌더링 프레임 호출
-        renderer.renderFrame(modes[currentModeIndex], progress, oldColor, newColor, true, 1.0f);
+        renderer.renderFrame(modes[currentModeIndex], progress, oldColor, newColor, true, 0.8f);
 
         // 이벤트 및 더블 버퍼 교체
         glfwSwapBuffers(window);

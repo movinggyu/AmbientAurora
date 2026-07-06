@@ -23,8 +23,8 @@ public:
     void renderFrame(TransitionMode mode, float progress, 
                      const RGBColor& oldColor, 
                      const RGBColor& newColor,
-                    bool isGradient,
-                    float hueOffset);
+                     bool isGradient,
+                     float gradientFeather);
 
 private:
     // OpenGL 셰이더 컴파일 및 프로그램 링크
@@ -50,8 +50,8 @@ private:
     int m_locAspectRatio;
     int m_locOldColor;
     int m_locNewColor;
-    int m_locHueoffset;
     int m_locIsgradient;
+    int m_locGradientFeather;
 };
 
 } // namespace AmbientAurora
