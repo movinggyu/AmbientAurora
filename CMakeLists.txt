@@ -1,49 +1,51 @@
 cmake_minimum_required(VERSION 3.14)
-project(AmbientAuroraTest)
+project(AmbientAuroraQt)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 1. FetchContent 기능을 사용하여 GLFW를 자동으로 인터넷에서 다운로드 및 빌드
-include(FetchContent)
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        3.3.8 # 검증된 안정화 버전
-)
+# 1. Qt의 메타 오브젝트 시스템을 위한 필수 자동화 옵션 활성화
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
-# GLFW 빌드 시 불필요한 문서나 예제 빌드는 제외하여 속도 업
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+# 2. Qt 패키지 찾기 (개발 환경에 맞춰 Qt6 또는 Qt5로 변경 가능)
+# GUI 구성과 OpenGL 렌더링을 위해 Widgets 및 OpenGLWidgets 컴포넌트가 필요합니다.
+find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets QuickWidgets)
 
-FetchContent_MakeAvailable(glfw)
-
-# 2. 빌드할 소스 파일들 등록 (현재 프로젝트 구조에 맞게 경로 지정)
-# main.cpp와 glad.c가 src 폴더 바로 아래에 있고, ScreenRenderer가 src/render에 있다고 가정합니다.
-add_executable(AmbientAuroraTest
-    src/mainTest.cpp
+# 3. 빌드할 소스 파일들 등록 (이미지의 폴더 구조 반영)
+add_executable(AmbientAuroraQt
+    src/mainTest.cpp                 # Qt QApplication 진입점으로 수정할 파일
+    src/ui/MainWindow.cpp
+    src/ui/OpenGLWidget.cpp
+    src/ui/TestPanel.qml
     src/render/glad/glad.c
     src/render/ScreenRenderer.cpp
+    # TODO: core, camera, lighting 등 추가로 필요한 소스 파일(.cpp)을 여기에 모두 나열하세요.
 )
 
-# 3. 헤더 파일들을 찾을 수 있도록 인클루드 디렉토리 설정
-target_include_directories(AmbientAuroraTest PRIVATE
+# 4. 헤더 파일 인클루드 디렉토리 설정
+target_include_directories(AmbientAuroraQt PRIVATE
     src
+    src/ui
     src/render
-    src/core
     src/render/glad
+    src/core
 )
 
-# 4. GLFW 라이브러리 링크
-target_link_libraries(AmbientAuroraTest PRIVATE glfw)
+# 5. 라이브러리 링크 (GLFW 대신 Qt 라이브러리 링크)
+target_link_libraries(AmbientAuroraQt PRIVATE 
+    Qt6::Widgets 
+    Qt6::OpenGLWidgets
+    Qt6::QuickWidgets
+)
 
-# 5. 운영체제(OS)별 필수 그래픽 드라이버/라이브러리 자동 링크
+# 6. 운영체제(OS)별 필수 그래픽 드라이버/라이브러리 자동 링크
 if(WIN32)
-    target_link_libraries(AmbientAuroraTest PRIVATE opengl32)
+    target_link_libraries(AmbientAuroraQt PRIVATE opengl32)
 elseif(APPLE)
-    target_link_libraries(AmbientAuroraTest PRIVATE "-framework OpenGL" "-framework Cocoa" "-framework IOKit" "-framework CoreVideo")
+    target_link_libraries(AmbientAuroraQt PRIVATE "-framework OpenGL" "-framework Cocoa")
 else()
     find_package(OpenGL REQUIRED)
-    target_link_libraries(AmbientAuroraTest PRIVATE OpenGL::GL)
+    target_link_libraries(AmbientAuroraQt PRIVATE OpenGL::GL)
 endif()
