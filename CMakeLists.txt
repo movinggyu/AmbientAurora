@@ -15,13 +15,11 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets QuickWidgets)
 
 # 3. 빌드할 소스 파일들 등록 (이미지의 폴더 구조 반영)
 add_executable(AmbientAuroraQt
-    src/mainTest.cpp                 # Qt QApplication 진입점으로 수정할 파일
+    src/mainTest.cpp
     src/ui/MainWindow.cpp
     src/ui/OpenGLWidget.cpp
-    src/ui/TestPanel.qml
     src/render/glad/glad.c
     src/render/ScreenRenderer.cpp
-    # TODO: core, camera, lighting 등 추가로 필요한 소스 파일(.cpp)을 여기에 모두 나열하세요.
 )
 
 # 4. 헤더 파일 인클루드 디렉토리 설정

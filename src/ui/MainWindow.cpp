@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     qmlWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
     // QML 파일 경로 지정 (상황에 맞게 경로 수정 필요)
-    qmlWidget->setSource(QUrl::fromLocalFile("../src/ui/TestPanel.qml"));
+    qmlWidget->setSource(QUrl::fromLocalFile("../src/ui/qml/MainUI.qml"));
 
     if (qmlWidget->status() == QQuickWidget::Error) {
         for (const QQmlError &error : qmlWidget->errors()) {
