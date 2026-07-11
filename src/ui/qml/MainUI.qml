@@ -7,17 +7,26 @@ Item {
     height: 720
 
     property bool isHubVisible: false // 하단 바 표시 상태
+    property bool isPanelVisible: false
+    property url currentPanelSource: ""
 
     // 1. 패널을 띄우는 로더 (동적 생성)
     Loader {
         id: panelLoader
         anchors.centerIn: parent
-        // 하단 바가 숨겨지면 열려있던 패널도 닫히도록 설정
-        active: root.isHubVisible 
-        
+        source: currentPanelSource
+        visible: currentPanelSource !== ""
+
         // 패널이 부드럽게 나타나고 사라지는 애니메이션
         Behavior on opacity { NumberAnimation { duration: 200 } }
-        opacity: status === Loader.Ready ? 1.0 : 0.0
+        opacity: isPanelVisible ? 1.0 : 0.0
+    }
+
+    Timer {
+        id: panelHideTimer
+        interval: 220
+        repeat: false
+        onTriggered: currentPanelSource = ""
     }
 
     // 2. 하단 독(Bottom Bar)
@@ -26,37 +35,43 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         
         // 상태(isHubVisible)에 따라 위아래로 움직임
-        y: root.isHubVisible ? (root.height - height - 30) : (root.height + 50)
+        // 1. 부모의 하단 가장자리에 이 요소를 실시간으로 강력하게 고정합니다.
+        anchors.bottom: parent.bottom
+
+        // 2. isHubVisible 상태에 따라 하단 여백(Margin)만 조절하여 요소를 올리거나 숨깁니다.
+        anchors.bottomMargin: root.isHubVisible ? 20 : -(height + 20)
         
-        Behavior on y {
-            NumberAnimation { duration: 400; easing.type: Easing.OutBack }
+        Behavior on anchors.bottomMargin {
+            NumberAnimation {
+                duration: 500;
+                easing.type: Easing.InOutQuad
+            }
         }
 
         // BottomBar에서 신호가 오면 Loader의 소스 파일을 교체하여 패널을 염
-        onRequestSliderPanel: panelLoader.source = "panels/SliderPanel.qml"
-        onRequestClosePanel: panelLoader.source = "" // 소스를 비우면 패널이 닫힘
+        onRequestSliderPanel: {
+            currentPanelSource = "panels/SliderPanel.qml"
+            panelHideTimer.stop()
+            isPanelVisible = true
+        }
+        onRequestClosePanel: {
+            root.isHubVisible = false
+            isPanelVisible = false
+            panelHideTimer.restart()
+        }
     }
 
     // 3. 중앙 로고 (토글 버튼 역할)
-    Rectangle {
+    LogoButton {
         id: logoButton
-        width: 80
-        height: 80
-        radius: 40
         anchors.centerIn: parent
-        color: "white"
+        enabled: !root.isHubVisible
+        opacity: root.isHubVisible ? 0.0 : 1.0
+        Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.InOutQuad } }
 
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: {
-                // 버튼을 누를 때마다 하단 바 상태 변경
-                root.isHubVisible = !root.isHubVisible
-                
-                // 바가 닫힐 때는 로드된 패널도 초기화
-                if(!root.isHubVisible) {
-                    panelLoader.source = ""
-                }
+        onToggled: {
+            if (!root.isHubVisible) {
+                root.isHubVisible = true
             }
         }
     }

@@ -6,7 +6,9 @@ Rectangle {
     border.color: Qt.rgba(1, 1, 1, 0.4)
     border.width: 1
     
-    // 이 패널 안에 다른 컴포넌트들을 넣을 수 있도록 설정
+    implicitWidth: Math.max(200, container.childrenRect.width + 40) 
+    implicitHeight: Math.max(150, container.childrenRect.height + 40) 
+
     default property alias content: container.data 
     
     Item { 
