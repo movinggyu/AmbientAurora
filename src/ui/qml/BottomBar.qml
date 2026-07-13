@@ -9,6 +9,34 @@ Rectangle {
     color: Qt.rgba(1, 1, 1, 0.15) 
     border.color: Qt.rgba(1, 1, 1, 0.4)
     border.width: 1
+    
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.bottom: parent.bottom
+
+    property bool isVisible: false
+    property int animationDuration: 300
+    property var animationEasing: Easing.InOutQuad 
+
+    enabled: isVisible
+    visible: opacity > 0
+    opacity: isVisible ? 1.0 : 0.0
+    transform: Translate {
+        id: bottomTranslate
+        y: root.isVisible ? -20 : 0
+        Behavior on y {
+            NumberAnimation {
+                duration: root.animationDuration * 1.5;
+                easing.type: root.animationEasing
+            }
+        }
+    }
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: root.animationDuration;
+            easing.type: root.animationEasing
+        }
+    }
 
     // 어떤 패널을 열어야 하는지 부모에게 알리는 신호들
     signal requestSliderPanel()

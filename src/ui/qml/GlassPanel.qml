@@ -12,14 +12,13 @@ Rectangle {
     implicitWidth: Math.max(300, layout.implicitWidth + 40) 
     implicitHeight: Math.max(150, layout.implicitHeight + 40)
 
-    signal requestClosePanel() // 패널 닫기 요청 신호
-
     property bool isOpen: false // 패널 열림 상태를 나타내는 프로퍼티
     property int animationDuration: 300
     property var animationEasing: Easing.InOutQuad
 
     default property alias content: layout.data // GlassPanel의 content 속성을 ColumnLayout의 data로 연결
     
+    enabled: isOpen
     visible: opacity > 0
     opacity: isOpen ? 1.0 : 0.0
     transform: Translate {

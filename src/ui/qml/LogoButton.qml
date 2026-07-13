@@ -7,6 +7,21 @@ Rectangle {
     height: 80
     radius: width / 2
     color: Qt.rgba(1, 1, 1, 0.0) // 투명 배경
+    anchors.centerIn: parent
+
+    property bool isVisible: true
+    property int animationDuration: 300
+    property var animationEasing: Easing.InOutQuad
+
+    enabled: isVisible
+    opacity: isVisible ? 1.0 : 0.0
+    Behavior on opacity {
+        NumberAnimation {
+            duration: root.animationDuration;
+            easing.type: root.animationEasing
+        }
+    }
+
     Image {
         id: logoImage
         anchors.centerIn: parent

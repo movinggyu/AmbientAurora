@@ -29,7 +29,7 @@ GlassPanel {
 
         Button {
             text: "닫기"
-            onClicked: root.requestClosePanel() // 닫기 버튼 클릭 시 패널 닫기 요청 신호 발생
+            onClicked: root.isOpen = false
         }
     }
 
