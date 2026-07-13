@@ -14,6 +14,10 @@ Item {
     SliderPanel {
         id: sliderPanel
         isOpen: root.sliderPanelOpen
+
+        onClosePanel: {
+            root.sliderPanelOpen = false
+        }
     }
 
     // 2. 하단 독(Bottom Bar)

@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 
 Rectangle {
@@ -12,9 +13,12 @@ Rectangle {
     implicitWidth: Math.max(300, layout.implicitWidth + 40) 
     implicitHeight: Math.max(150, layout.implicitHeight + 40)
 
+    property string title: "None"
     property bool isOpen: false // 패널 열림 상태를 나타내는 프로퍼티
     property int animationDuration: 300
     property var animationEasing: Easing.InOutQuad
+
+    signal closePanel()
 
     default property alias content: layout.data // GlassPanel의 content 속성을 ColumnLayout의 data로 연결
     
@@ -45,5 +49,31 @@ Rectangle {
         anchors.fill: parent
         anchors.margins: 20
         spacing: 10
+        
+        // 헤더(제목, 닫기버튼) 행
+        RowLayout {
+            id: headerRow
+            Layout.fillWidth: true
+
+            Text {
+                id: titleLabel
+                text: root.title
+                color: "white" 
+                font.bold: true
+                font.pixelSize: 16
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            // 제목과 버튼 사이에 공간을 채워 양쪽으로 밀어내는 스페이서
+            Item {
+                Layout.fillWidth: true
+            }
+
+            Button {
+                text: "닫기"
+                Layout.alignment: Qt.AlignVCenter
+                onClicked: root.closePanel()
+            }
+        }
     }
 }

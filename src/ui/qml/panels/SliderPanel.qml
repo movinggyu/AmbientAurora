@@ -5,33 +5,30 @@ import "../" // GlassPanel.qml을 가져오기 위한 경로
 
 GlassPanel {
     id: root
-    
+    title: "Slider"
+
     // 외부에서 패널을 쉽게 제어할 수 있도록 프로퍼티 개방
-    property alias title: titleLabel.text
     property alias value: slider.value
     property alias from: slider.from
     property alias to: slider.to
     
-    // 헤더(제목, 닫기버튼) 행
-    RowLayout {
-        id: headerRow
+    // 슬라이딩 필 네비게이션 탭 바 (모드 설정: Static, Dynamic, Aurora)
+    TabBar {
+        id: tabBar
         Layout.fillWidth: true
-        spacing: 10
+        currentIndex: 0 // Default to the first tab
 
-        Text {
-            id: titleLabel
-            text: "Slider Value"
-            color: "white" 
-            font.bold: true
-            font.pixelSize: 16
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+        TabButton {
+            text: "Static"
         }
-
-        Button {
-            text: "닫기"
-            onClicked: root.isOpen = false
+        TabButton {
+            text: "Dynamic"
+        }
+        TabButton {
+            text: "Aurora"
         }
     }
+
 
     // 슬라이더 컴포넌트 1
     Slider {
