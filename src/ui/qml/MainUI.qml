@@ -1,63 +1,73 @@
 import QtQuick
 import QtQuick.Controls
+import "panels"
 
 Item {
     id: root
     width: 1280
     height: 720
 
-    property bool isHubVisible: false // 하단 바 표시 상태
-    property bool isPanelVisible: false
-    property url currentPanelSource: ""
+    property bool isHubVisible: false
+    property bool sliderPanelOpen: false
+    property bool cameraPanelOpen: false
 
-    // 1. 패널을 띄우는 로더 (동적 생성)
-    Loader {
-        id: panelLoader
-        anchors.centerIn: parent
-        source: currentPanelSource
-        visible: currentPanelSource !== ""
-
-        // 패널이 부드럽게 나타나고 사라지는 애니메이션
-        Behavior on opacity { NumberAnimation { duration: 200 } }
-        opacity: isPanelVisible ? 1.0 : 0.0
+    function openPanel(name) {
+        if (name === "slider") sliderPanelOpen = true
+        else if (name === "camera") cameraPanelOpen = true
+    }
+    function closePanel(name) {
+        if (name === "slider") sliderPanelOpen = false
+        else if (name === "camera") cameraPanelOpen = false
+    }
+    function closeAllPanels() {
+        sliderPanelOpen = false
+        cameraPanelOpen = false
     }
 
-    Timer {
-        id: panelHideTimer
-        interval: 220
-        repeat: false
-        onTriggered: currentPanelSource = ""
+    // 1. 패널 영역: 모든 패널을 불러와놓고 보이기/숨기기만 처리
+    SliderPanel {
+        id: sliderPanel
+        isOpen: root.sliderPanelOpen
+
+        onRequestClosePanel: {
+            root.closePanel("slider")
+        }
     }
 
     // 2. 하단 독(Bottom Bar)
     BottomBar {
         id: bottomBar
         anchors.horizontalCenter: parent.horizontalCenter
-        
-        // 상태(isHubVisible)에 따라 위아래로 움직임
-        // 1. 부모의 하단 가장자리에 이 요소를 실시간으로 강력하게 고정합니다.
         anchors.bottom: parent.bottom
 
-        // 2. isHubVisible 상태에 따라 하단 여백(Margin)만 조절하여 요소를 올리거나 숨깁니다.
-        anchors.bottomMargin: root.isHubVisible ? 20 : -(height + 20)
-        
-        Behavior on anchors.bottomMargin {
-            NumberAnimation {
-                duration: 500;
-                easing.type: Easing.InOutQuad
+        opacity: root.isHubVisible ? 1.0 : 0.0
+        transform: Translate {
+            id: bottomTranslate
+            y: root.isHubVisible ? -20 : bottomBar.height
+            Behavior on y {
+                NumberAnimation {
+                    duration: root.animationDuration;
+                    easing.type: root.animationEasing
+                }
             }
         }
 
-        // BottomBar에서 신호가 오면 Loader의 소스 파일을 교체하여 패널을 염
+        Behavior on opacity {
+            NumberAnimation {
+                duration: root.animationDuration * 2;
+                easing.type: root.animationEasing
+            }
+        }
+
         onRequestSliderPanel: {
-            currentPanelSource = "panels/SliderPanel.qml"
-            panelHideTimer.stop()
-            isPanelVisible = true
+            root.openPanel("slider")
+        }
+        onRequestCameraPanel: {
+            root.openPanel("camera")
         }
         onRequestClosePanel: {
+            root.closeAllPanels()
             root.isHubVisible = false
-            isPanelVisible = false
-            panelHideTimer.restart()
         }
     }
 
@@ -67,7 +77,12 @@ Item {
         anchors.centerIn: parent
         enabled: !root.isHubVisible
         opacity: root.isHubVisible ? 0.0 : 1.0
-        Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.InOutQuad } }
+        Behavior on opacity {
+            NumberAnimation {
+                duration: root.animationDuration;
+                easing.type: root.animationEasing
+            }
+        }
 
         onToggled: {
             if (!root.isHubVisible) {
