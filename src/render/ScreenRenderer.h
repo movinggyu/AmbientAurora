@@ -21,10 +21,12 @@ public:
     // oldColor: 이전 모드의 현재 색상
     // newColor: 새롭게 전환될 모드의 현재 색상
     void renderFrame(TransitionMode mode, float progress, 
-                     const RGBColor& oldColor, 
-                     const RGBColor& newColor,
+                     const OKLCHColor& oldColor, 
+                     const OKLCHColor& newColor,
                      bool isGradient,
                      float gradientFeather);
+
+    void resize(int width, int height);
 
 private:
     // OpenGL 셰이더 컴파일 및 프로그램 링크
@@ -52,6 +54,7 @@ private:
     int m_locNewColor;
     int m_locIsgradient;
     int m_locGradientFeather;
+    float m_aspectRatio;
 };
 
 } // namespace AmbientAurora

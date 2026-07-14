@@ -57,8 +57,8 @@ namespace AmbientAurora {
         }
     }
 
-    RGBColor ColorAnimator::getCurrentColor() const {
-        return OKLCHToRGB(m_currentColor); // 현재 색상을 RGB로 변환하여 반환
+    OKLCHColor ColorAnimator::getCurrentColor() const {
+        return m_currentColor;
     }
 
     OKLCHColor ColorAnimator::interpolateColor(const OKLCHColor& start, const OKLCHColor& target, float progress) {

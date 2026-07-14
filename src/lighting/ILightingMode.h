@@ -10,10 +10,10 @@ namespace AmbientAurora {
         virtual ~ILightingMode() = default;
 
         // 현재 색을 반환한다.
-        virtual RGBColor getCurrentColor() const = 0;
+        virtual OKLCHColor getCurrentColor() const = 0;
 
         // 다음 목표 색을 반환하고 현재 색상을 업데이트한다.
-        virtual RGBColor getAndSetNextColor() = 0;
+        virtual OKLCHColor getAndSetNextColor() = 0;
     };
 } // namespace AmbientAurora
 

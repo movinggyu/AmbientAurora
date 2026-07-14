@@ -53,6 +53,9 @@ void OpenGLWidget::initializeGL() {
 void OpenGLWidget::resizeGL(int w, int h) {
     // 창 크기가 변경될 때 뷰포트 업데이트 (w, h는 변경된 창의 너비와 높이)
     glViewport(0, 0, w, h);
+    if (renderer) {
+        renderer->resize(w, h);
+    }
 }
 
 void OpenGLWidget::paintGL() {
@@ -63,15 +66,15 @@ void OpenGLWidget::paintGL() {
     // 화면 렌더링을 위한 파라미터 세팅 (UI와 연동 전 테스트용 하드코딩 값)
     // 참고: Types.h에 선언된 enum과 Color 구조체의 실제 정의에 따라 캐스팅이 필요할 수 있습니다.
     TransitionMode mode = static_cast<TransitionMode>(2); // 2 = CENTER 전환 효과 모드[cite: 8]
-    static RGBColor oldColor = {1.0f, 0.1f, 0.2f}; // 다홍색 느낌
-    static RGBColor newColor = {0.1f, 0.5f, 1.0f}; // 푸른색 느낌
+    static OKLCHColor oldColor = RGBToOKLCH({1.0f, 0.1f, 0.2f});
+    static OKLCHColor newColor = RGBToOKLCH({0.1f, 0.5f, 1.0f});
     bool isGradient = true;
     float gradientFeather = 0.5f;
     
     currentProgress += deltaTime * speed;
     if (currentProgress > 1.0f) {
         currentProgress = 0.0f;
-        RGBColor tempColor = oldColor;
+        OKLCHColor tempColor = oldColor;
         oldColor = newColor; // 이전 색상을 새 색상으로 업데이트
         newColor = tempColor; // 새 색상을 이전 색상으로 업데이트
     }

@@ -20,6 +20,12 @@ add_executable(AmbientAuroraQt
     src/ui/OpenGLWidget.cpp
     src/render/glad/glad.c
     src/render/ScreenRenderer.cpp
+    src/core/Color.cpp
+    src/core/ColorAnimator.cpp
+    src/lighting/StaticMode.cpp
+    src/lighting/DynamicMode.cpp
+    src/lighting/AuroraMode.cpp
+    src/lighting/LightingManager.cpp
 )
 
 # 4. 헤더 파일 인클루드 디렉토리 설정

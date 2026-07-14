@@ -17,7 +17,7 @@ public:
     void update(float deltaTime);
 
     // 최종적으로 화면/모니터 렌더러가 사용할 색상 반환
-    RGBColor getFinalColor() const;
+    OKLCHColor getFinalColor() const;
 
 private:
     std::unique_ptr<ILightingMode> m_activeMode; // 현재 켜져 있는 모드

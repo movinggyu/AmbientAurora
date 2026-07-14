@@ -34,13 +34,13 @@ namespace AmbientAurora {
         }
     }
 
-    RGBColor AuroraMode::getCurrentColor() const {
-        return OKLCHToRGB(m_currentColor);
+    OKLCHColor AuroraMode::getCurrentColor() const {
+        return m_currentColor;
     }
 
-    RGBColor AuroraMode::getAndSetNextColor() {
+    OKLCHColor AuroraMode::getAndSetNextColor() {
         updateColor();
-        return OKLCHToRGB(m_currentColor);
+        return m_currentColor;
     }
 
     bool AuroraMode::isHueInRange(float hue) const {

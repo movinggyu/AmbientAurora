@@ -24,13 +24,13 @@ namespace AmbientAurora {
         m_currentColor = OKLCHColor(prevColor.l, prevColor.c, m_startHue); // 초기 현재 색상 설정
     }
 
-    RGBColor DynamicMode::getCurrentColor() const {
-        return OKLCHToRGB(m_currentColor);
+    OKLCHColor DynamicMode::getCurrentColor() const {
+        return m_currentColor;
     }
 
-    RGBColor DynamicMode::getAndSetNextColor() {
+    OKLCHColor DynamicMode::getAndSetNextColor() {
         m_currentColor.h = calculateNextHue();
-        return OKLCHToRGB(m_currentColor);
+        return m_currentColor;
     }
 
     bool DynamicMode::isHueInRange(float hue) const {

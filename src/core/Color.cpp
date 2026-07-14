@@ -1,5 +1,5 @@
 #include "Color.h"
-#include <iostream>
+#include <algorithm>
 #include <cmath>
 
 namespace AmbientAurora {

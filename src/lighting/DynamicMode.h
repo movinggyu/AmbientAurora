@@ -11,8 +11,8 @@ public:
     DynamicMode();
     DynamicMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
 
-    RGBColor getCurrentColor() const override;
-    RGBColor getAndSetNextColor() override;
+    OKLCHColor getCurrentColor() const override;
+    OKLCHColor getAndSetNextColor() override;
 
     bool isHueInRange(float hue) const;
     void setStartHue(float hue);

@@ -35,39 +35,6 @@ uniform vec3 u_NewColor; // 새 색상
 uniform int u_Isgradient; // 0: 단색, 1: 그라데이션
 uniform float u_GradientFeather; // 그라데이션 경계의 부드러움 정도 (0.0 ~ 1.0)
 
-// 의사 난수 생성 함수 (Dissolve 모드에서 사용)
-float rand(vec2 co){
-    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
-}
-
-// RGB -> OKLCH 변환 함수
-vec3 rgb2oklch(vec3 c) {
-    // 픽셀 감마 선형화 (sRGB 감마 제거)
-    vec3 lC = mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c));
-    
-    // LMS 색상 공간으로 매핑 (Oklab 수식 matrix)
-    float l = 0.4122214708 * lC.r + 0.5363325363 * lC.g + 0.0514459929 * lC.b;
-    float m = 0.2119034982 * lC.r + 0.6806995451 * lC.g + 0.1073969566 * lC.b;
-    float s = 0.0883024619 * lC.r + 0.2817188376 * lC.g + 0.6299787005 * lC.b;
-    
-    // 세제곱근 비선형 처리
-    float l_ = pow(l, 1.0 / 3.0);
-    float m_ = pow(m, 1.0 / 3.0);
-    float s_ = pow(s, 1.0 / 3.0);
-    
-    // Lab 축 추출
-    float L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_;
-    float a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;
-    float b = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;
-    
-    // Polar (LCH) 변환
-    float C = length(vec2(a, b));
-    float H = atan(b, a); // 라디안 단위 (-PI ~ PI)
-    if (H < 0.0) H += 6.28318530717; // 0 ~ 2*PI 범위로 정규화
-    
-    return vec3(L, C, H);
-}
-
 // OKLCH -> RGB 역변환 함수
 vec3 oklch2rgb(vec3 lch) {
     float L = lch.x;
@@ -108,9 +75,9 @@ float mixHue(float h1, float h2, float t) {
 
 void main()
 {
-    // 현재 픽셀 위치에서의 이전 색상과 새 색상을 샘플링
-    vec3 oldLCH = rgb2oklch(u_OldColor);
-    vec3 newLCH = rgb2oklch(u_NewColor);
+    // 색상은 CPU에서 이미 OKLCH로 변환해 uniform으로 전달한다.
+    vec3 oldLCH = u_OldColor;
+    vec3 newLCH = u_NewColor;
 
     if (u_Isgradient == 1) {
         // 1. 중심(0.5, 0.5)으로부터의 절대 거리 계산
@@ -184,15 +151,14 @@ ScreenRenderer::ScreenRenderer()
     : m_screenWidth(0), m_screenHeight(0), m_shaderProgram(0), m_vao(0), m_vbo(0),
       m_locTransitionMode(-1), m_locProgress(-1),
       m_locOldColor(-1), m_locNewColor(-1), m_locIsgradient(-1),
-      m_locGradientFeather(-1) {}
+      m_locGradientFeather(-1), m_aspectRatio(1.0f) {}
 
 ScreenRenderer::~ScreenRenderer() {
     shutdown();
 }
 
 bool ScreenRenderer::initialize(int width, int height) {
-    m_screenWidth = width;
-    m_screenHeight = height;
+    resize(width, height);
 
     // OpenGL 셰이더 컴파일 및 프로그램 링크
     m_shaderProgram = compileShader(vertexShaderSource, fragmentShaderSource);
@@ -246,9 +212,15 @@ void ScreenRenderer::setupQuad() {
     glBindVertexArray(0);
 }
 
+void ScreenRenderer::resize(int width, int height) {
+    m_screenWidth = width;
+    m_screenHeight = height;
+    m_aspectRatio = height > 0 ? static_cast<float>(width) / static_cast<float>(height) : 1.0f;
+}
+
 void ScreenRenderer::renderFrame(TransitionMode mode, float progress, 
-                                  const RGBColor& oldColor, 
-                                  const RGBColor& newColor,
+                                  const OKLCHColor& oldColor, 
+                                  const OKLCHColor& newColor,
                                   bool isGradient,
                                   float gradientFeather)
 {
@@ -257,21 +229,15 @@ void ScreenRenderer::renderFrame(TransitionMode mode, float progress,
 
     glUseProgram(m_shaderProgram);
 
-    // 화면 비율 계산 및 Uniform 설정
-    int viewport[4];
-    glGetIntegerv(GL_VIEWPORT, viewport);
-    float currentWidth = static_cast<float>(viewport[2]);
-    float currentHeight = static_cast<float>(viewport[3]);
-    float aspectRatio = (currentHeight > 0.0f) ? (currentWidth / currentHeight) : 1.0f;
-    glUniform1f(m_locAspectRatio, aspectRatio);
+    glUniform1f(m_locAspectRatio, m_aspectRatio);
 
     // Uniform 설정
     glUniform1i(m_locTransitionMode, static_cast<int>(mode));
     glUniform1f(m_locProgress, progress);
 
-    // 최대 4개의 색상 제한
-    glUniform3f(m_locOldColor, oldColor.r, oldColor.g, oldColor.b);
-    glUniform3f(m_locNewColor, newColor.r, newColor.g, newColor.b);
+    constexpr float kDegreesToRadians = 0.01745329251994329577f;
+    glUniform3f(m_locOldColor, oldColor.l, oldColor.c, oldColor.h * kDegreesToRadians);
+    glUniform3f(m_locNewColor, newColor.l, newColor.c, newColor.h * kDegreesToRadians);
     glUniform1i(m_locIsgradient, isGradient ? 1 : 0);
     glUniform1f(m_locGradientFeather, gradientFeather);
 

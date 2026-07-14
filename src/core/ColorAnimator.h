@@ -3,6 +3,7 @@
 
 #include "Color.h"
 #include "Types.h"
+#include <algorithm>
 
 namespace AmbientAurora {
 class ColorAnimator {
@@ -16,7 +17,7 @@ public:
     void update(float deltaTime);
 
     // 현재 계산이 완료된 프레임의 RGB 색상 반환
-    RGBColor getCurrentColor() const;
+    OKLCHColor getCurrentColor() const;
 
     // 현재 애니레이터의 상태 확인
     AnimationState getState() const { return m_state; }
