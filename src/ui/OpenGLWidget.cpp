@@ -56,7 +56,6 @@ void OpenGLWidget::resizeGL(int w, int h) {
 }
 
 void OpenGLWidget::paintGL() {
-    // 시간에 따라 progress 값을 0.0 ~ 1.0 사이로 부드럽게 왕복(Ping-Pong)하도록 계산
     float deltaTime = elapsedTimer.restart() / 1000.0f; // 초 단위 경과 시간
     float speed = 0.5f; // 전환 속도 (값이 커지면 빨라짐)
 
@@ -76,14 +75,6 @@ void OpenGLWidget::paintGL() {
         oldColor = newColor; // 이전 색상을 새 색상으로 업데이트
         newColor = tempColor; // 새 색상을 이전 색상으로 업데이트
     }
-
-    // std::cout << "Rendering Frame: Mode=" << static_cast<int>(mode)
-    //           << ", Progress=" << currentProgress
-    //           << ", OldColor=(" << oldColor.r << "," << oldColor.g << "," << oldColor.b << ")"
-    //           << ", NewColor=(" << newColor.r << "," << newColor.g << "," << newColor.b << ")"
-    //           << ", IsGradient=" << isGradient
-    //           << ", GradientFeather=" << gradientFeather
-    //           << std::endl;
 
     // 3. 실제 그리기 함수 호출
     if (renderer) {
