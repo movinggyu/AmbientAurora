@@ -1,10 +1,10 @@
-#include "ColorAnimator.h"
+#include "TransitionManager.h"
 #include <algorithm>
 #include <cmath>
 
 namespace AmbientAurora {
 
-    ColorAnimator::ColorAnimator()
+    TransitionManager::TransitionManager()
         : m_state(AnimationState::IDLE),
           m_elapsedTime(0.0f),
           m_totalTime(0.0f),
@@ -14,7 +14,7 @@ namespace AmbientAurora {
     {
     }
 
-    void ColorAnimator::startTransition(const OKLCHColor& targetColor, float totalTime, float transitionDuration) {
+    void TransitionManager::startTransition(const OKLCHColor& targetColor, float totalTime, float transitionDuration) {
         m_totalTime = std::max(transitionDuration, totalTime);
         m_transitionDuration = transitionDuration;
 
@@ -30,7 +30,7 @@ namespace AmbientAurora {
         }
     }
 
-    void ColorAnimator::update(float deltaTime) {
+    void TransitionManager::update(float deltaTime) {
         if (m_state == AnimationState::IDLE) return; // 대기 상태이면 아무 작업도 하지 않음
 
         m_elapsedTime += deltaTime;

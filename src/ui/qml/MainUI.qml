@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Window
+// qmllint disable
 import AmbientAurora 1.0
 import "panels"
 
@@ -15,6 +16,7 @@ Window {
     property bool cameraPanelOpen: false
 
     // 0. OpenGL 배경 영역
+    // qmllint disable
     AuroraItem {
         id: backgroundRenderer
         objectName: "auroraBg"

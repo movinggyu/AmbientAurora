@@ -1,14 +1,14 @@
-#ifndef AMBIENT_AURORA_COLORANIMATOR_H
-#define AMBIENT_AURORA_COLORANIMATOR_H
+#ifndef AMBIENT_AURORA_TRANSITIONMANAGER_H
+#define AMBIENT_AURORA_TRANSITIONMANAGER_H
 
 #include "Color.h"
 #include "Types.h"
 #include <algorithm>
 
 namespace AmbientAurora {
-class ColorAnimator {
+class TransitionManager {
 public:
-    ColorAnimator();
+    TransitionManager();
 
     // 새로운 목표 색상, 변하는 시간, 유지하는 시간을 설정하고 애니메이션 시작
     void startTransition(const OKLCHColor& targetColor, float totalTime, float transitionDuration);
@@ -38,4 +38,4 @@ private:
 
 } // namespace AmbientAurora
 
-#endif // AMBIENT_AURORA_COLORANIMATOR_H
+#endif // AMBIENT_AURORA_TRANSITIONMANAGER_H
