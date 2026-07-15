@@ -32,8 +32,4 @@ void LightingManager::update(float deltaTime) {
     m_animator.update(deltaTime);
 }
 
-OKLCHColor LightingManager::getFinalColor() const {
-    return m_animator.getCurrentColor();
-}
-
 } // namespace AmbientAurora
