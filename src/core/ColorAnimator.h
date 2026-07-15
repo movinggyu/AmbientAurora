@@ -16,9 +16,6 @@ public:
     // 메인 루프에서 매 프레임 호출 (deltaTime은 밀리초(ms) 단위, 예: 20.0f)
     void update(float deltaTime);
 
-    // 현재 계산이 완료된 프레임의 RGB 색상 반환
-    OKLCHColor getCurrentColor() const;
-
     // 현재 애니레이터의 상태 확인
     AnimationState getState() const { return m_state; }
     bool isFinished() const { return m_state == AnimationState::IDLE; }
@@ -29,13 +26,8 @@ public:
     float getProgress() const { return (m_state == AnimationState::IDLE || m_transitionDuration <= 0.0f) ? 1.0f : std::min(1.0f, (m_elapsedTime / m_transitionDuration)); }
 
 private:
-    // OKLCH 색상 공간에서 두 색상을 부드럽게 이어주는 헬퍼 함수
-    OKLCHColor interpolateColor(const OKLCHColor& start, const OKLCHColor& target, float progress);
-
-private:
     OKLCHColor m_startColor;     // 전환 시작 색상
     OKLCHColor m_targetColor;    // 목표 색상
-    OKLCHColor m_currentColor;   // 현재 프레임의 계산된 색상
 
     float m_elapsedTime;         // 현재 구간에서 흘러간 시간
     float m_totalTime;           // 현재 구간의 총 시간 (transitionDuration + holdDuration)

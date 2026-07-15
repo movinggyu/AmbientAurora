@@ -1,14 +1,26 @@
 import QtQuick
+import QtQuick.Window
+import AmbientAurora 1.0
 import "panels"
 
-Item {
+Window {
     id: root
     width: 1280
     height: 720
+    visible: true
+    title: "Ambient Aurora"
 
     property bool isHubVisible: false
     property bool sliderPanelOpen: false
     property bool cameraPanelOpen: false
+
+    // 0. OpenGL 배경 영역
+    AuroraItem {
+        id: backgroundRenderer
+        objectName: "auroraBg"
+        anchors.fill: parent
+    }
+
 
     // 1. 패널 영역: 모든 패널을 불러와놓고 보이기/숨기기만 처리
     SliderPanel {

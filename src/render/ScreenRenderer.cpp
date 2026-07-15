@@ -82,7 +82,7 @@ void main()
     if (u_Isgradient == 1) {
         // 1. 중심(0.5, 0.5)으로부터의 절대 거리 계산
         vec2 centerDist = abs(TexCoord - vec2(0.5));
-        const float hueOffset = 0.8; // 그라데이션 강도 (라디안 단위)
+        const float hueOffset = 0.5; // 그라데이션 강도 (라디안 단위)
         
         float plusField = centerDist.x * 0.5 + centerDist.y * 0.7;
         float centerMask = smoothstep(0.0, u_GradientFeather, plusField);

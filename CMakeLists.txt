@@ -11,13 +11,13 @@ set(CMAKE_AUTORCC ON)
 
 # 2. Qt 패키지 찾기 (개발 환경에 맞춰 Qt6 또는 Qt5로 변경 가능)
 # GUI 구성과 OpenGL 렌더링을 위해 Widgets 및 OpenGLWidgets 컴포넌트가 필요합니다.
-find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets QuickWidgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets OpenGLWidgets QuickWidgets Qml Quick)
 
 # 3. 빌드할 소스 파일들 등록 (이미지의 폴더 구조 반영)
 add_executable(AmbientAuroraQt
     src/mainTest.cpp
-    src/ui/MainWindow.cpp
-    src/ui/OpenGLWidget.cpp
+    src/ui/AuroraItem.cpp
+    src/ui/AuroraRenderer.cpp
     src/render/glad/glad.c
     src/render/ScreenRenderer.cpp
     src/core/Color.cpp
@@ -42,6 +42,8 @@ target_link_libraries(AmbientAuroraQt PRIVATE
     Qt6::Widgets 
     Qt6::OpenGLWidgets
     Qt6::QuickWidgets
+    Qt6::Qml
+    Qt6::Quick
 )
 
 # 6. 운영체제(OS)별 필수 그래픽 드라이버/라이브러리 자동 링크
