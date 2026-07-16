@@ -30,9 +30,12 @@ void AuroraItem::setProgress(float progress) {
     }
 }
 
-void AuroraItem::setColors(const OKLCHColor& oldColor, const OKLCHColor& newColor) {
-    // 색상 교체 시 화면 갱신 요청
-    m_oldColor = oldColor;
+void AuroraItem::setColors(const OKLCHColor& newColor) {
+    // 1. 방지턱
+    if (m_oldColor.l == newColor.l && m_oldColor.c == newColor.c && m_oldColor.h == newColor.h) return;
+
+    // 2. 그리기 요청
+    m_oldColor = m_newColor;
     m_newColor = newColor;
     update();
 }

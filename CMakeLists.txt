@@ -20,6 +20,7 @@ add_executable(AmbientAuroraQt
     src/ui/AuroraRenderer.cpp
     src/render/glad/glad.c
     src/render/ScreenRenderer.cpp
+    src/core/Application.cpp
     src/core/Color.cpp
     src/core/TransitionManager.cpp
     src/lighting/StaticMode.cpp

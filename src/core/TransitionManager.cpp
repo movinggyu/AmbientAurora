@@ -8,17 +8,14 @@ namespace AmbientAurora {
         : m_state(AnimationState::IDLE),
           m_elapsedTime(0.0f),
           m_totalTime(0.0f),
-          m_transitionDuration(0.0f),
-          m_startColor(OKLCHColor(0.5f, 1.0f, 0.0f)), // 초기 색상은 흰색
-          m_targetColor(OKLCHColor(0.5f, 1.0f, 0.0f)) // 초기 목표 색상은 흰색
+          m_transitionDuration(0.0f)
     {
     }
 
-    void TransitionManager::startTransition(const OKLCHColor& targetColor, float totalTime, float transitionDuration) {
+    void TransitionManager::startTransition(float totalTime, float transitionDuration) {
         m_totalTime = std::max(transitionDuration, totalTime);
         m_transitionDuration = transitionDuration;
 
-        m_targetColor = targetColor;   // 목표 색상 설정
         m_elapsedTime = 0.0f;          // 경과 시간 초기화(변환 시작)
 
         if (m_transitionDuration > 0.0f) {

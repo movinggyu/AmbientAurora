@@ -1,31 +1,45 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext> // 컨텍스트 속성 주입을 위해 추가
 #include <QQuickWindow>
-#include "ui/AuroraItem.h" // 새로 생성할 커스텀 아이템 헤더
+#include "ui/AuroraItem.h"
+#include "core/Application.h" // Application 헤더 추가
 
 using namespace AmbientAurora;
 
 int main(int argc, char *argv[]) {
-    // 성능 최적화를 위해 OpenGL 렌더러 명시적 지정
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
-    
     QGuiApplication app(argc, argv);
 
-    // 1. 커스텀 C++ 타입(AuroraItem)을 QML 시스템에 등록
-    // (모듈 이름: AmbientAurora, 버전 1.0, QML에서 사용할 이름: AuroraItem)
     qmlRegisterType<AuroraItem>("AmbientAurora", 1, 0, "AuroraItem");
 
-    // 2. QML 엔진 설정 및 메인 UI 로드
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("../src/ui/qml/MainUI.qml")); // 리소스 파일(qrc) 사용 권장
-    
+
+    // 1. Application 인스턴스 생성 및 QML 컨텍스트에 'AppController'로 등록
+    Application coreApp;
+    engine.rootContext()->setContextProperty("AppController", &coreApp);
+
+    const QUrl url(QStringLiteral("../src/ui/qml/MainUI.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
-    
+
     engine.load(url);
+
+    // 2. 생성된 UI 트리에서 AuroraItem 객체를 찾아 C++ 컨트롤러에 연결
+    QObject *rootObject = engine.rootObjects().constFirst();
+    if (rootObject) {
+        // MainUI.qml에서 지정한 objectName "auroraBg"로 검색
+        AuroraItem *auroraItem = rootObject->findChild<AuroraItem*>("auroraBg");
+        if (auroraItem) {
+            coreApp.setAuroraItem(auroraItem);
+        }
+    }
+
+    // 3. 메인 타이머 및 로직 구동 시작
+    coreApp.start();
 
     return app.exec();
 }

@@ -16,6 +16,8 @@ public:
     // 메인 루프(Application)에서 매 프레임 호출할 핵심 루프
     void update(float deltaTime);
 
+    float getProgress() const { return m_animator.getProgress(); }
+
 private:
     std::unique_ptr<ILightingMode> m_activeMode; // 현재 켜져 있는 모드
     TransitionManager m_animator;                // 색상을 부드럽게 전환하기 위한 step 계산기 클래스

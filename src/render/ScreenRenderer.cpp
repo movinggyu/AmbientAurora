@@ -114,7 +114,7 @@ void main()
     
     // 전환 모드에 따라 색상 혼합 처리 (DISSOLVE, WIPE, CENTER 등)
     if (u_TransitionMode == 0) { // DISSOLVE
-        mask = 1.0 - u_Progress;
+        mask = u_Progress;
     }
     else if (u_TransitionMode == 1) { // WIPE
         float extendProgress = u_Progress * (1.0 + edgeSmooth * 2.0) - edgeSmooth; // 가장자리 부드럽게 처리

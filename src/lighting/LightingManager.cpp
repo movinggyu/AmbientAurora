@@ -15,7 +15,7 @@ void LightingManager::changeMode(std::unique_ptr<ILightingMode> newMode) {
     if(m_activeMode) {
         // 새 모드의 다음 색상을 가져와 애니메이터 시작
         OKLCHColor startColor = m_activeMode->getAndSetNextColor();
-        m_animator.startTransition(startColor, m_defaultHoldTime, m_defaultTransitionDuration); // 기본 전환시간으로 색 전환하며 모드 전환
+        m_animator.startTransition(m_defaultHoldTime, m_defaultTransitionDuration); // 기본 전환시간으로 색 전환하며 모드 전환
     }
 }
 
@@ -25,7 +25,7 @@ void LightingManager::update(float deltaTime) {
     if(m_animator.isFinished()) {
         // 애니메이터가 끝났다면, 활성 모드에서 다음 색상을 가져와 애니메이터 시작
         OKLCHColor nextColor = m_activeMode->getAndSetNextColor();
-        m_animator.startTransition(nextColor, m_defaultTotalTime, m_defaultTransitionTime);
+        m_animator.startTransition(m_defaultTotalTime, m_defaultTransitionTime);
     }
 
     // 애니메이터 업데이트
