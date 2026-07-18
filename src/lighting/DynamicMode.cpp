@@ -11,7 +11,7 @@ namespace AmbientAurora {
           m_deltaHue(1.0f), // 기본 변화량
           m_transitionMode(AmbientAurora::TransitionMode::DISSOLVE) // 기본 트랜지션 모드
     {
-        m_currentColor = OKLCHColor(0.5f, 1.0f, m_startHue); // 초기 현재 색상 설정
+        m_currentColor = OKLCHColor(0.5f, 0.5f, m_startHue); // 초기 현재 색상 설정
     }
 
     // 생성자에서 시작 색상, 끝 색상, 변화량, 트랜지션 모드를 설정

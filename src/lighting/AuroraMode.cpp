@@ -13,8 +13,8 @@ namespace AmbientAurora {
         std::random_device rd;
         m_gen.seed(rd());
 
-        // 초기 색상은 시작 Hue로 설정 (하얀색)
-        m_currentColor = OKLCHColor(0.5f, 1.0f, startHue);
+        // 초기 색상은 시작 Hue로 설정 (빨간색)
+        m_currentColor = OKLCHColor(0.5f, 0.5f, startHue);
     }
 
     AuroraMode::AuroraMode(const float startHue, const float endHue, float samplingRange, const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode)

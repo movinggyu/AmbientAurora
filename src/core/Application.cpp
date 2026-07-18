@@ -57,6 +57,7 @@ void Application::setTransitionMode(int transitionMode) {
 void Application::setColor(float l, float c, float h){
     if (m_auroraItem) {
         OKLCHColor color(l, c, h);
+        m_lightingManager->setColor(l, c, h);
         m_auroraItem->setColors(color);
     }
 }
@@ -68,7 +69,8 @@ void Application::onTick() {
     m_lightingManager->update(deltaTime);
 
     // 2. 계산된 결과를 AuroraItem(QML 객체)에 주입
-    if (m_auroraItem) {
+    if (m_auroraItem && m_lightingManager) {
+        m_auroraItem->setColors(m_lightingManager->getCurrentColor());
         m_auroraItem->setProgress(m_lightingManager->getProgress());
     }
 }

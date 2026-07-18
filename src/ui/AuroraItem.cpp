@@ -6,8 +6,8 @@ namespace AmbientAurora {
 AuroraItem::AuroraItem(QQuickItem *parent)
     : QQuickFramebufferObject(parent) {
     // 초기 더미 색상 세팅 (초기 렌더링 시 검은 화면 방지)
-    m_oldColor = OKLCHColor(1.0f, 1.0f, 0.0f);
-    m_newColor = OKLCHColor(0.5f, 0.5f, 180.0f);
+    m_oldColor = OKLCHColor(0.5f, 0.5f, 0.0f);
+    m_newColor = OKLCHColor(0.5f, 0.5f, 0.0f);
 }
 
 QQuickFramebufferObject::Renderer *AuroraItem::createRenderer() const {

@@ -1,4 +1,5 @@
 #include "LightingManager.h"
+#include "StaticMode.h"
 
 namespace AmbientAurora {
 
@@ -30,6 +31,13 @@ void LightingManager::update(float deltaTime) {
 
     // 애니메이터 업데이트
     m_animator.update(deltaTime);
+}
+
+void LightingManager::setColor(float l, float c, float h) {
+    if(!m_activeMode) return;
+
+    auto staticMode = dynamic_cast<StaticMode*>(m_activeMode.get());
+    if(staticMode) staticMode->setColor(l, c, h);
 }
 
 } // namespace AmbientAurora
