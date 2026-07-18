@@ -27,7 +27,7 @@ void Application::setAuroraItem(AuroraItem* item) {
 
 void Application::start() {
     // 앱 시작 시 기본 모드를 StaticMode로 설정
-    m_lightingManager->changeMode(std::make_unique<StaticMode>());
+    m_lightingManager->changeMode(LightingModeType::Static);
     m_elapsedTimer.start();
     m_timer->start(16);
 }
@@ -35,13 +35,13 @@ void Application::start() {
 void Application::setLightingMode(int modeIndex) {
     switch (modeIndex) {
         case 0:
-            m_lightingManager->changeMode(std::make_unique<StaticMode>());
+            m_lightingManager->changeMode(LightingModeType::Static);
             break;
         case 1:
-            m_lightingManager->changeMode(std::make_unique<DynamicMode>());
+            m_lightingManager->changeMode(LightingModeType::Dynamic);
             break;
         case 2:
-            m_lightingManager->changeMode(std::make_unique<AuroraMode>());
+            m_lightingManager->changeMode(LightingModeType::Aurora);
             break;
         default:
             break;

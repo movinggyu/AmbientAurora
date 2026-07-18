@@ -14,6 +14,8 @@ namespace AmbientAurora {
 
         // 다음 목표 색을 반환하고 현재 색상을 업데이트한다.
         virtual OKLCHColor getAndSetNextColor() = 0;
+
+        virtual void onActivate(const OKLCHColor& prevColor) = 0;
     };
 } // namespace AmbientAurora
 

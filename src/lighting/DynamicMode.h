@@ -20,6 +20,7 @@ public:
     void setTransitionMode(AmbientAurora::TransitionMode transitionMode);
     void setDeltaHue(float deltaHue);
     float calculateNextHue();
+    void onActivate(const OKLCHColor& prevColor) override {m_currentColor = prevColor;}
 
 private:
     float m_startHue; // 시작 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)

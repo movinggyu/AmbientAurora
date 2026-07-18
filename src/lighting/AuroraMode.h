@@ -25,6 +25,7 @@ public:
     void setTransitionMode(AmbientAurora::TransitionMode transitionMode);
     float calculateNextColor(); // 다음 색상을 계산
     void updateColor(); // m_currentColor을 업데이트
+    void onActivate(const OKLCHColor& prevColor) override {m_currentColor = prevColor;}
 
 private:
     float startHue; // 시작 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)

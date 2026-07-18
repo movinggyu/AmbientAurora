@@ -7,6 +7,7 @@
 #include <memory>
 #include "../lighting/LightingManager.h"
 #include "../ui/AuroraItem.h"
+#include "Types.h"
 
 namespace AmbientAurora {
 

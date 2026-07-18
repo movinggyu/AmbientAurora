@@ -17,6 +17,13 @@ enum class AnimationState {
     HOLD = 2         // 목표 색상을 유지하는 구간
 };
 
+// 열거형 라이팅 타입
+enum class LightingModeType {
+    Static = 0,
+    Dynamic = 1,
+    Aurora = 2
+};
+
 } // namespace AmbientAurora
 
 #endif // AMBIENT_AURORA_TYPES_H

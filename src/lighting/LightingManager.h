@@ -2,7 +2,11 @@
 #define AMBIENT_AURORA_LIGHTINGMANAGER_H
 
 #include "ILightingMode.h"
+#include "StaticMode.h"
+#include "DynamicMode.h"
+#include "AuroraMode.h"
 #include "../core/TransitionManager.h"
+#include "../core/Types.h"
 #include <memory> // memory는 메모리누수를 방지하기 위해 스마트 포인터(unique_ptr)를 사용하기 위해 필요.
 
 namespace AmbientAurora {
@@ -11,7 +15,7 @@ public:
     LightingManager();
 
     // UI 등에서 모드를 바꿀 때 호출
-    void changeMode(std::unique_ptr<ILightingMode> newMode);
+    void changeMode(LightingModeType modeType);
 
     // 메인 루프(Application)에서 매 프레임 호출할 핵심 루프
     void update(float deltaTime);
@@ -22,7 +26,11 @@ public:
     float getProgress() const { return m_animator.getProgress(); }
 
 private:
-    std::unique_ptr<ILightingMode> m_activeMode; // 현재 켜져 있는 모드
+    std::unique_ptr<StaticMode> m_staticMode;    // 정적 모드
+    std::unique_ptr<DynamicMode> m_dynamicMode;  // 동적 모드
+    std::unique_ptr<AuroraMode> m_auroraMode;    // 오로라 모드
+
+    ILightingMode* m_activeMode;                 // 현재 모드를 가르키는 포인터
     TransitionManager m_animator;                // 색상을 부드럽게 전환하기 위한 step 계산기 클래스
     
     // 기획에 따른 밀리초(ms) 단위 시간 세팅 변수 (예: 3초 전체, 2초 변환)
