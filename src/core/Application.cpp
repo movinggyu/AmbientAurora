@@ -54,11 +54,10 @@ void Application::setTransitionMode(int transitionMode) {
     }
 }
 
-void Application::setColor(float l, float c, float h){
+void Application::applyColor(float l, float c, float h){
     if (m_auroraItem) {
         OKLCHColor color(l, c, h);
         m_lightingManager->setColor(l, c, h);
-        m_auroraItem->setColors(color);
     }
 }
 

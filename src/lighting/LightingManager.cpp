@@ -54,7 +54,7 @@ void LightingManager::update(float deltaTime) {
     m_animator.update(deltaTime);
 }
 
-void LightingManager::setColor(float l, float c, float h) {
+void LightingManager::updateActiveModeColor(float l, float c, float h) {
     if(!m_activeMode) return;
 
     auto staticMode = dynamic_cast<StaticMode*>(m_activeMode);

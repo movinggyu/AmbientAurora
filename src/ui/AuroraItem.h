@@ -31,7 +31,7 @@ public:
 
     // --- Setters (LightingManager, ColorAnimator 등 비즈니스 로직에서 호출) ---
     void setProgress(float progress);
-    void setColors(const OKLCHColor& newColor);
+    void setRenderColor(const OKLCHColor& newColor);
     void setTransitionMode(int mode);
     void setMode(TransitionMode mode);
     void setIsGradient(bool isGradient);

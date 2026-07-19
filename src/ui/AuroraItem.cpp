@@ -30,7 +30,7 @@ void AuroraItem::setProgress(float progress) {
     }
 }
 
-void AuroraItem::setColors(const OKLCHColor& newColor) {
+void AuroraItem::setRenderColor(const OKLCHColor& newColor) {
     // 1. 방지턱
     if (m_oldColor.l == newColor.l && m_oldColor.c == newColor.c && m_oldColor.h == newColor.h) return;
 

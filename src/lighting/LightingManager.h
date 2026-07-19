@@ -20,7 +20,7 @@ public:
     // 메인 루프(Application)에서 매 프레임 호출할 핵심 루프
     void update(float deltaTime);
 
-    void setColor(float l, float c, float h);
+    void updateActiveModeColor(float l, float c, float h);
 
     OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }
