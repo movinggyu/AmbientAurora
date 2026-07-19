@@ -27,6 +27,7 @@ public:
     Q_INVOKABLE void setLightingMode(int modeIndex); // 0: Static, 1: Dynamic, 2: Aurora
     Q_INVOKABLE void setTransitionMode(int transitionMode);
     Q_INVOKABLE void applyColor(float l, float c, float h);
+    Q_INVOKABLE void applyColor(float l, float c);
 
 private slots:
     void onTick();

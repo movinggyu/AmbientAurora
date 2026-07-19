@@ -15,6 +15,7 @@ public:
     OKLCHColor getAndSetNextColor() override;
 
     bool isHueInRange(float hue) const;
+    void setLightnessAndChroma(float lightness, float chroma) override {m_currentColor.l = lightness; m_currentColor.c = chroma;}
     void setStartHue(float hue);
     void setEndHue(float hue);
     void setTransitionMode(AmbientAurora::TransitionMode transitionMode);

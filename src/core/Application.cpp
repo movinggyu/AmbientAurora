@@ -61,6 +61,12 @@ void Application::applyColor(float l, float c, float h){
     }
 }
 
+void Application::applyColor(float l, float c){
+    if (m_auroraItem) {
+        m_lightingManager->updateActiveModeColor(l, c);
+    }
+}
+
 void Application::onTick() {
     float deltaTime = static_cast<float>(m_elapsedTimer.restart());
 

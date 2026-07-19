@@ -57,8 +57,16 @@ void LightingManager::update(float deltaTime) {
 void LightingManager::updateActiveModeColor(float l, float c, float h) {
     if(!m_activeMode) return;
 
+    m_activeMode->setLightnessAndChroma(l, c);
+
     auto staticMode = dynamic_cast<StaticMode*>(m_activeMode);
-    if(staticMode) staticMode->setColor(l, c, h);
+    if(staticMode) staticMode->setHue(h);
+}
+
+void LightingManager::updateActiveModeColor(float l, float c) {
+    if(!m_activeMode) return;
+
+    m_activeMode->setLightnessAndChroma(l, c);
 }
 
 } // namespace AmbientAurora

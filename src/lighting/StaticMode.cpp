@@ -16,13 +16,8 @@ OKLCHColor StaticMode::getAndSetNextColor() {
     return m_color;
 }
 
-void StaticMode::setColor(const OKLCHColor& color) {
-    m_color = color;
-}
-
-void StaticMode::setColor(float l, float c, float h) {
-    OKLCHColor oklch(l, c, h);
-    m_color = oklch;
+void StaticMode::setHue(float h) {
+    m_color.h = h;
 }
 
 } // namespace AmbientAurora

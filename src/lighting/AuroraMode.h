@@ -18,6 +18,7 @@ public:
     OKLCHColor getCurrentColor() const override;
     OKLCHColor getAndSetNextColor() override;
 
+    void setLightnessAndChroma(float lightness, float chroma) override {m_currentColor.l = lightness; m_currentColor.c = chroma;}
     bool isHueInRange(float hue) const;
     void setStartHue(float hue);
     void setEndHue(float hue);

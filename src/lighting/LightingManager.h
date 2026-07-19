@@ -21,6 +21,7 @@ public:
     void update(float deltaTime);
 
     void updateActiveModeColor(float l, float c, float h);
+    void updateActiveModeColor(float l, float c);
 
     OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }

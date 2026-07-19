@@ -29,6 +29,7 @@ GlassPanel {
     StackLayout {
         id: stackLayout
         Layout.fillWidth: true
+        Layout.preferredHeight: children[currentIndex].implicitHeight
         currentIndex: tabBar.currentIndex 
 
         // [인덱스 0] Static 모드 패널
@@ -38,59 +39,7 @@ GlassPanel {
 
             RowLayout{
                 Layout.fillWidth: true
-                Text { text: "Lightness"; color: "white"; font.pixelSize: 12}
-                Item { Layout.fillWidth: true }
-                Text {
-                    text: Math.floor(staticLightnessSlider.value * 100) + "%"
-                    color: "white"
-                    Layout.alignment: Qt.AlignHCenter 
-                }
-            }
-            
-            Slider {
-                id: staticLightnessSlider
-                from: 0.0; to: 1.0; value: 0.5
-                Layout.fillWidth: true
-                onValueChanged: {
-                    if (typeof AppController !== "undefined") {
-                        AppController.setColor(
-                            staticLightnessSlider.value,
-                            staticChromaSlider.value,
-                            staticHueSlider.value
-                        )
-                    }
-                }
-            }
-
-            RowLayout{
-                Layout.fillWidth: true
-                Text { text: "Chroma"; color: "white"; font.pixelSize: 12}
-                Item { Layout.fillWidth: true }
-                Text {
-                    text: Math.floor(staticChromaSlider.value * 100) + "%"
-                    color: "white"
-                    Layout.alignment: Qt.AlignHCenter 
-                }
-            }
-            
-            Slider {
-                id: staticChromaSlider
-                from: 0.0; to: 1.0; value: 0.5
-                Layout.fillWidth: true
-                onValueChanged: {
-                    if (typeof AppController !== "undefined") {
-                        AppController.setColor(
-                            staticLightnessSlider.value,
-                            staticChromaSlider.value,
-                            staticHueSlider.value
-                        )
-                    }
-                }
-            }
-
-            RowLayout{
-                Layout.fillWidth: true
-                Text { text: "Hue"; color: "white"; font.pixelSize: 12}
+                Text { text: "Color"; color: "white"; font.pixelSize: 12}
                 Item { Layout.fillWidth: true }
                 Text {
                     text: Math.floor(staticHueSlider.value) + "˚"
@@ -105,9 +54,9 @@ GlassPanel {
                 Layout.fillWidth: true
                 onValueChanged: {
                     if (typeof AppController !== "undefined") {
-                        AppController.setColor(
-                            staticLightnessSlider.value,
-                            staticChromaSlider.value,
+                        AppController.applyColor(
+                            lightnessSlider.value,
+                            chromaSlider.value,
                             staticHueSlider.value
                         )
                     }
@@ -158,6 +107,56 @@ GlassPanel {
                 text: Math.round(auroraRangeSlider.value)
                 color: "white"
                 Layout.alignment: Qt.AlignHCenter 
+            }
+        }
+    }
+
+    RowLayout{
+        Layout.fillWidth: true
+        Text { text: "Lightness"; color: "white"; font.pixelSize: 12}
+        Item { Layout.fillWidth: true }
+        Text {
+            text: Math.floor(lightnessSlider.value * 100) + "%"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter 
+        }
+    }
+    
+    Slider {
+        id: lightnessSlider
+        from: 0.0; to: 1.0; value: 0.5
+        Layout.fillWidth: true
+        onValueChanged: {
+            if (typeof AppController !== "undefined") {
+                AppController.applyColor(
+                    lightnessSlider.value,
+                    chromaSlider.value
+                )
+            }
+        }
+    }
+
+    RowLayout{
+        Layout.fillWidth: true
+        Text { text: "Chroma"; color: "white"; font.pixelSize: 12}
+        Item { Layout.fillWidth: true }
+        Text {
+            text: Math.floor(chromaSlider.value * 100) + "%"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter 
+        }
+    }
+    
+    Slider {
+        id: chromaSlider
+        from: 0.0; to: 1.0; value: 0.5
+        Layout.fillWidth: true
+        onValueChanged: {
+            if (typeof AppController !== "undefined") {
+                AppController.applyColor(
+                    lightnessSlider.value,
+                    chromaSlider.value
+                )
             }
         }
     }

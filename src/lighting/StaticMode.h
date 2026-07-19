@@ -18,8 +18,8 @@ public:
     OKLCHColor getAndSetNextColor() override;
 
     // 색상 설정 (슬라이더는 색상, 밝기, 채도를 사용하기 때문에 OKLCHColor를 사용, 구현 시 내부적으로 RGB로 변환하여 저장)
-    void setColor(const OKLCHColor& color);
-    void setColor(float l, float c, float h);
+    void setLightnessAndChroma(float lightness, float chroma) override {m_color.l = lightness; m_color.c = chroma;}
+    void setHue(float h);
     void onActivate(const OKLCHColor& prevColor) override {m_color = prevColor;}
 
 private:

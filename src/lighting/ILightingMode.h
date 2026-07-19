@@ -16,6 +16,8 @@ namespace AmbientAurora {
         virtual OKLCHColor getAndSetNextColor() = 0;
 
         virtual void onActivate(const OKLCHColor& prevColor) = 0;
+        
+        virtual void setLightnessAndChroma(float lightness, float chroma) = 0;
     };
 } // namespace AmbientAurora
 
