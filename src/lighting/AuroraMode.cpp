@@ -76,7 +76,7 @@ namespace AmbientAurora {
     }
 
     float AuroraMode::calculateNextColor() {
-        std::uniform_real_distribution<float> dist(startHue - samplingRange, endHue + samplingRange);
+        std::uniform_real_distribution<float> dist(m_currentColor.h - samplingRange, m_currentColor.h + samplingRange);
         float nextHue = dist(m_gen);
 
         // Hue가 0~360 범위를 벗어나면 wrap-around 처리
