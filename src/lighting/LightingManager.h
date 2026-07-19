@@ -22,6 +22,9 @@ public:
 
     void updateActiveModeColor(float l, float c, float h);
     void updateActiveModeColor(float l, float c);
+    void updateActiveModeColorRange(float startHue, float endHue);
+    void updateActiveModeSamplingRange(float range);
+    void updateActiveModeDeltaHue(float deltaHue);
 
     OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }

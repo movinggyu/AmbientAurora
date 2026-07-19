@@ -55,15 +55,32 @@ void Application::setTransitionMode(int transitionMode) {
 }
 
 void Application::applyColor(float l, float c, float h){
-    if (m_auroraItem) {
-        OKLCHColor color(l, c, h);
+    if (m_lightingManager) {
         m_lightingManager->updateActiveModeColor(l, c, h);
     }
 }
 
 void Application::applyColor(float l, float c){
-    if (m_auroraItem) {
+    if (m_lightingManager) {
         m_lightingManager->updateActiveModeColor(l, c);
+    }
+}
+
+void Application::applyColorRange(float startHue, float endHue){
+    if (m_lightingManager) {
+        m_lightingManager->updateActiveModeColorRange(startHue, endHue);
+    }
+}
+
+void Application::applySamplingRange(float range){
+    if (m_lightingManager) {
+        m_lightingManager->updateActiveModeSamplingRange(range);
+    }
+}
+
+void Application::applyDeltaHue(float deltaHue){
+    if (m_lightingManager) {
+        m_lightingManager->updateActiveModeDeltaHue(deltaHue);
     }
 }
 

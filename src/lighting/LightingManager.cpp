@@ -69,4 +69,32 @@ void LightingManager::updateActiveModeColor(float l, float c) {
     m_activeMode->setLightnessAndChroma(l, c);
 }
 
+void LightingManager::updateActiveModeColorRange(float startHue, float endHue) {
+    if(!m_activeMode) return;
+
+    if(auto dynamicMode = dynamic_cast<DynamicMode*>(m_activeMode)) {
+        dynamicMode->setStartHue(startHue);
+        dynamicMode->setEndHue(endHue);
+    }else if(auto auroraMode = dynamic_cast<AuroraMode*>(m_activeMode)){
+        auroraMode->setStartHue(startHue);
+        auroraMode->setEndHue(endHue);
+    }
+}
+
+void LightingManager::updateActiveModeSamplingRange(float range) {
+    if(!m_activeMode) return;
+
+    if(auto auroraMode = dynamic_cast<AuroraMode*>(m_activeMode)) {
+        auroraMode->setSamplingRange(range);
+    }
+}
+
+void LightingManager::updateActiveModeDeltaHue(float deltaHue) {
+    if(!m_activeMode) return;
+
+    if(auto dynamicMode = dynamic_cast<DynamicMode*>(m_activeMode)) {
+        dynamicMode->setDeltaHue(deltaHue);
+    }
+}
+
 } // namespace AmbientAurora

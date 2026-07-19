@@ -28,6 +28,9 @@ public:
     Q_INVOKABLE void setTransitionMode(int transitionMode);
     Q_INVOKABLE void applyColor(float l, float c, float h);
     Q_INVOKABLE void applyColor(float l, float c);
+    Q_INVOKABLE void applyColorRange(float startHue, float endHue);
+    Q_INVOKABLE void applySamplingRange(float range);
+    Q_INVOKABLE void applyDeltaHue(float deltaHue);
 
 private slots:
     void onTick();

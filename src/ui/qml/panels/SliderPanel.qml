@@ -25,17 +25,20 @@ GlassPanel {
         TabButton { text: "Aurora" }
     }
 
+    Text{ text: "Color Setting"; color: "white"; font.pixelSize: 14; font.bold: true}
+
     // 2. 스택 레이아웃 (탭에 따라 보여질 슬라이더 패널들)
     StackLayout {
-        id: stackLayout
+        id: colorStackLayout
         Layout.fillWidth: true
         Layout.preferredHeight: children[currentIndex].implicitHeight
-        currentIndex: tabBar.currentIndex 
+        // Aurora일 때는 Dynamic과 같은 슬라이더(start,end)를 갖는다. 아니면 원래 자기 인덱스를 사용
+        currentIndex: tabBar.currentIndex === 2 ? 1 : tabBar.currentIndex
 
         // [인덱스 0] Static 모드 패널
         ColumnLayout {
             id: staticPanel
-            spacing: 5
+            spacing: 10
 
             RowLayout{
                 Layout.fillWidth: true
@@ -69,44 +72,54 @@ GlassPanel {
             id: dynamicPanel
             spacing: 5
             
-            Text { text: "Hue Shift Speed"; color: "white"; font.pixelSize: 12 }
-            Slider {
-                id: dynSpeedSlider
-                from: 0.1; to: 20; value: 1.0
+            RowLayout{
                 Layout.fillWidth: true
-                onValueChanged: {
-                    if (typeof AppController !== "undefined") {
-                        // 예: AppController.setDynamicSpeed(value)
-                    }
+                Text { text: "Start Color"; color: "white"; font.pixelSize: 12}
+                Item { Layout.fillWidth: true }
+                Text {
+                    text: Math.floor(startHueSlider.value) + "˚"
+                    color: "white"
+                    Layout.alignment: Qt.AlignHCenter 
                 }
             }
-            Text { 
-                text: dynSpeedSlider.value.toFixed(1)
-                color: "white"
-                Layout.alignment: Qt.AlignHCenter 
-            }
-        }
-
-        // [인덱스 2] Aurora 모드 패널
-        ColumnLayout {
-            id: auroraPanel
-            spacing: 5
             
-            Text { text: "Sampling Range"; color: "white"; font.pixelSize: 12 }
             Slider {
-                id: auroraRangeSlider
-                from: 10; to: 180; value: 30
+                id: startHueSlider
+                from: 0.0; to: 360.0; value: 0.0
                 Layout.fillWidth: true
                 onValueChanged: {
                     if (typeof AppController !== "undefined") {
-                        // 예: AppController.setAuroraSamplingRange(value)
+                        AppController.applyColorRange(
+                            startHueSlider.value,
+                            endHueSlider.value
+                        )
                     }
                 }
             }
-            Text { 
-                text: Math.round(auroraRangeSlider.value)
-                color: "white"
-                Layout.alignment: Qt.AlignHCenter 
+
+            RowLayout{
+                Layout.fillWidth: true
+                Text { text: "End Color"; color: "white"; font.pixelSize: 12}
+                Item { Layout.fillWidth: true }
+                Text {
+                    text: Math.floor(endHueSlider.value) + "˚"
+                    color: "white"
+                    Layout.alignment: Qt.AlignHCenter 
+                }
+            }
+            
+            Slider {
+                id: endHueSlider
+                from: 0.0; to: 360.0; value: 360.0
+                Layout.fillWidth: true
+                onValueChanged: {
+                    if (typeof AppController !== "undefined") {
+                        AppController.applyColorRange(
+                            startHueSlider.value,
+                            endHueSlider.value
+                        )
+                    }
+                }
             }
         }
     }
@@ -157,6 +170,75 @@ GlassPanel {
                     lightnessSlider.value,
                     chromaSlider.value
                 )
+            }
+        }
+    }
+
+    Text{ text: "Effect Setting"; color: "white"; font.pixelSize: 14; font.bold: true}
+
+    StackLayout {
+        id: effectStackLayout
+        Layout.fillWidth: true
+        Layout.preferredHeight: children[currentIndex].implicitHeight
+        // Aurora일 때는 Dynamic과 같은 슬라이더(start,end)를 갖는다. 아니면 원래 자기 인덱스를 사용
+        currentIndex: tabBar.currentIndex
+
+        // [인덱스 0]
+        ColumnLayout {
+            
+        }
+
+        // [인덱스 1]
+        ColumnLayout {
+            spacing: 10
+            
+            RowLayout{
+                Layout.fillWidth: true
+                Text { text: "Color Variation"; color: "white"; font.pixelSize: 12}
+                Item { Layout.fillWidth: true }
+                Text {
+                    text: Math.floor(deltaHueSlider.value)
+                    color: "white"
+                    Layout.alignment: Qt.AlignHCenter 
+                }
+            }
+            
+            Slider {
+                id: deltaHueSlider
+                from: 10.0; to: 50.0; value: 10.0
+                Layout.fillWidth: true
+                onValueChanged: {
+                    if (typeof AppController !== "undefined") {
+                        AppController.applyDeltaHue(deltaHueSlider.value)
+                    }
+                }
+            }
+        }
+
+        // [인덱스 2]
+        ColumnLayout {
+            spacing: 10
+            
+            RowLayout{
+                Layout.fillWidth: true
+                Text { text: "Sampling Range"; color: "white"; font.pixelSize: 12}
+                Item { Layout.fillWidth: true }
+                Text {
+                    text: Math.floor(samplingRangeSlider.value)
+                    color: "white"
+                    Layout.alignment: Qt.AlignHCenter 
+                }
+            }
+            
+            Slider {
+                id: samplingRangeSlider
+                from: 5.0; to: 20.0; value: 5.0
+                Layout.fillWidth: true
+                onValueChanged: {
+                    if (typeof AppController !== "undefined") {
+                        AppController.applySamplingRange(samplingRangeSlider.value)
+                    }
+                }
             }
         }
     }
