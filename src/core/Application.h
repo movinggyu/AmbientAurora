@@ -32,6 +32,9 @@ public:
     Q_INVOKABLE void applySamplingRange(float range);
     Q_INVOKABLE void applyDeltaHue(float deltaHue);
 
+    Q_INVOKABLE void applyGradientFeather(float feather);
+    Q_INVOKABLE void applyHueOffset(float offset);
+
 private slots:
     void onTick();
 

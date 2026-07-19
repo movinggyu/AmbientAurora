@@ -34,6 +34,7 @@ uniform vec3 u_OldColor; // 이전 색상
 uniform vec3 u_NewColor; // 새 색상
 uniform int u_Isgradient; // 0: 단색, 1: 그라데이션
 uniform float u_GradientFeather; // 그라데이션 경계의 부드러움 정도 (0.0 ~ 1.0)
+uniform float u_HueOffset; // 그라데이션 강도 (라디안 단위)
 
 // OKLCH -> RGB 역변환 함수
 vec3 oklch2rgb(vec3 lch) {
@@ -82,16 +83,15 @@ void main()
     if (u_Isgradient == 1) {
         // 1. 중심(0.5, 0.5)으로부터의 절대 거리 계산
         vec2 centerDist = abs(TexCoord - vec2(0.5));
-        const float hueOffset = 0.5; // 그라데이션 강도 (라디안 단위)
         
         float plusField = centerDist.x * 0.5 + centerDist.y * 0.7;
         float centerMask = smoothstep(0.0, u_GradientFeather, plusField);
 
         // 네 개의 모서리(Corner)별 고유한 Hue offset 가중치
-        float tlOffset = hueOffset;          // Top-Left (왼쪽 위)
-        float trOffset = hueOffset;          // Top-Right (오른쪽 위)
-        float brOffset = -hueOffset * 0.8;   // Bottom-Right (오른쪽 아래)
-        float blOffset = -hueOffset * 0.8;   // Bottom-Left (왼쪽 아래)
+        float tlOffset = u_HueOffset;          // Top-Left (왼쪽 위)
+        float trOffset = u_HueOffset;          // Top-Right (오른쪽 위)
+        float brOffset = -u_HueOffset * 0.5;   // Bottom-Right (오른쪽 아래)
+        float blOffset = -u_HueOffset * 0.5;   // Bottom-Left (왼쪽 아래)
 
         // 바이리니어 보간을 통해 네 모서리의 색상을 부드럽게 분배
         float topCornerHue = mix(tlOffset, trOffset, TexCoord.x);
@@ -99,7 +99,7 @@ void main()
         float finalCornerOffset = mix(bottomCornerHue, topCornerHue, TexCoord.y);
 
         // (TexCoord.y - 0.5) * 2.0 은 위아래로 갈수록 -1.0 ~ 1.0이 되는 세로 축입니다.
-        float verticalGrad = (TexCoord.y - 0.5) * 2.0 * hueOffset;
+        float verticalGrad = (TexCoord.y - 0.5) * 2.0 * u_HueOffset;
         
         // 기존 모서리 색상(50%)과 세로 그라데이션(50%)을 반반씩 섞어 아치형 느낌을 냅니다.
         float combinedOffset = mix(finalCornerOffset, verticalGrad, 0.5); // 마지막 인자가 클수록 세로 그라데이션이 강해집니다.
@@ -151,7 +151,7 @@ ScreenRenderer::ScreenRenderer()
     : m_screenWidth(0), m_screenHeight(0), m_shaderProgram(0), m_vao(0), m_vbo(0),
       m_locTransitionMode(-1), m_locProgress(-1),
       m_locOldColor(-1), m_locNewColor(-1), m_locIsgradient(-1),
-      m_locGradientFeather(-1), m_aspectRatio(1.0f) {}
+      m_locGradientFeather(-1), m_locHueOffset(-1), m_aspectRatio(1.0f) {}
 
 ScreenRenderer::~ScreenRenderer() {
     shutdown();
@@ -175,6 +175,7 @@ bool ScreenRenderer::initialize(int width, int height) {
     m_locNewColor = glGetUniformLocation(m_shaderProgram, "u_NewColor");
     m_locIsgradient = glGetUniformLocation(m_shaderProgram, "u_Isgradient");
     m_locGradientFeather = glGetUniformLocation(m_shaderProgram, "u_GradientFeather");
+    m_locHueOffset = glGetUniformLocation(m_shaderProgram, "u_HueOffset");
 
     // 화면 전체를 덮는 사각형 VAO/VBO 설정
     setupQuad();
@@ -222,7 +223,8 @@ void ScreenRenderer::renderFrame(TransitionMode mode, float progress,
                                   const OKLCHColor& oldColor, 
                                   const OKLCHColor& newColor,
                                   bool isGradient,
-                                  float gradientFeather)
+                                  float gradientFeather,
+                                  float hueOffset)
 {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -240,6 +242,7 @@ void ScreenRenderer::renderFrame(TransitionMode mode, float progress,
     glUniform3f(m_locNewColor, newColor.l, newColor.c, newColor.h * kDegreesToRadians);
     glUniform1i(m_locIsgradient, isGradient ? 1 : 0);
     glUniform1f(m_locGradientFeather, gradientFeather);
+    glUniform1f(m_locHueOffset, hueOffset);
 
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);

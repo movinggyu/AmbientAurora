@@ -24,7 +24,8 @@ public:
                      const OKLCHColor& oldColor, 
                      const OKLCHColor& newColor,
                      bool isGradient,
-                     float gradientFeather);
+                     float gradientFeather,
+                     float hueOffset);
 
     void resize(int width, int height);
 
@@ -54,6 +55,7 @@ private:
     int m_locNewColor;
     int m_locIsgradient;
     int m_locGradientFeather;
+    int m_locHueOffset;
     float m_aspectRatio;
 };
 

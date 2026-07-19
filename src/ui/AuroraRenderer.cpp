@@ -34,6 +34,7 @@ void AuroraRenderer::synchronize(QQuickFramebufferObject *item) {
     m_renderState.newColor = auroraItem->newColor();
     m_renderState.isGradient = auroraItem->isGradient();
     m_renderState.gradientFeather = auroraItem->gradientFeather();
+    m_renderState.hueOffset = auroraItem->hueOffset();
 }
 
 QOpenGLFramebufferObject *AuroraRenderer::createFramebufferObject(const QSize &size) {
@@ -65,7 +66,8 @@ void AuroraRenderer::render() {
         m_renderState.oldColor, 
         m_renderState.newColor, 
         m_renderState.isGradient, 
-        m_renderState.gradientFeather
+        m_renderState.gradientFeather,
+        m_renderState.hueOffset
     );
 }
 

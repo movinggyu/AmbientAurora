@@ -2,10 +2,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "../" // GlassPanel.qml
+// qmllint disable
 
 GlassPanel {
     id: root
-    title: "Slider"
+    title: "Color Setting"
 
     // 1. 탭 바 (모드 선택)
     TabBar {
@@ -15,7 +16,6 @@ GlassPanel {
         
         onCurrentIndexChanged: {
             if (typeof AppController !== "undefined") {
-                // qmllint disable
                 AppController.setLightingMode(currentIndex)
             }
         }
@@ -24,8 +24,6 @@ GlassPanel {
         TabButton { text: "Dynamic" }
         TabButton { text: "Aurora" }
     }
-
-    Text{ text: "Color Setting"; color: "white"; font.pixelSize: 14; font.bold: true}
 
     // 2. 스택 레이아웃 (탭에 따라 보여질 슬라이더 패널들)
     StackLayout {
@@ -173,9 +171,6 @@ GlassPanel {
             }
         }
     }
-
-    Text{ text: "Effect Setting"; color: "white"; font.pixelSize: 14; font.bold: true}
-
     StackLayout {
         id: effectStackLayout
         Layout.fillWidth: true

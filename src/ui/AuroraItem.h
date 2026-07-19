@@ -27,6 +27,7 @@ public:
     OKLCHColor newColor() const;
     bool isGradient() const;
     float gradientFeather() const;
+    float hueOffset() const;
     int transitionMode() const;
 
     // --- Setters (LightingManager, ColorAnimator 등 비즈니스 로직에서 호출) ---
@@ -36,12 +37,14 @@ public:
     void setMode(TransitionMode mode);
     void setIsGradient(bool isGradient);
     void setGradientFeather(float feather);
+    void setHueOffset(float offset);
 
 signals:
     void progressChanged();
     void transitionModeChanged();
     void isGradientChanged();
     void gradientFeatherChanged();
+    void hueOffsetChanged();
 
 private:
     // 렌더링에 필요한 상태 데이터만 저장 (계산 로직 없음)
@@ -51,6 +54,7 @@ private:
     OKLCHColor m_newColor;
     bool m_isGradient = true;
     float m_gradientFeather = 0.5f;
+    float m_hueOffset = 0.5f;
 };
 
 } // namespace AmbientAurora

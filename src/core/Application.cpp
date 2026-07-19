@@ -84,6 +84,18 @@ void Application::applyDeltaHue(float deltaHue){
     }
 }
 
+void Application::applyGradientFeather(float feather){
+    if (m_auroraItem) {
+        m_auroraItem->setGradientFeather(feather);
+    }
+}
+
+void Application::applyHueOffset(float offset){
+    if (m_auroraItem) {
+        m_auroraItem->setHueOffset(offset);
+    }
+}
+
 void Application::onTick() {
     float deltaTime = static_cast<float>(m_elapsedTimer.restart());
 

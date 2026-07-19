@@ -39,7 +39,8 @@ Rectangle {
     }
 
     // 어떤 패널을 열어야 하는지 부모에게 알리는 신호들
-    signal requestSliderPanel()
+    signal requestColorPanel()
+    signal requestAdvancedPanel()
     signal requestCameraPanel()
     signal requestClosePanel()
 
@@ -53,8 +54,12 @@ Rectangle {
             onClicked: root.requestClosePanel()
         }
         Button { 
-            text: "슬라이더" 
-            onClicked: root.requestSliderPanel() 
+            text: "색상 설정" 
+            onClicked: root.requestColorPanel() 
+        }
+        Button { 
+            text: "고급 설정" 
+            onClicked: root.requestAdvancedPanel() 
         }
         Button { 
             text: "카메라" 

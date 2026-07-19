@@ -31,6 +31,7 @@ private:
         OKLCHColor newColor;
         bool isGradient = true;
         float gradientFeather = 0.5f;
+        float hueOffset = 0.5f;
     } m_renderState;
 };
 

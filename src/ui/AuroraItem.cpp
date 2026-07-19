@@ -20,6 +20,7 @@ OKLCHColor AuroraItem::oldColor() const { return m_oldColor; }
 OKLCHColor AuroraItem::newColor() const { return m_newColor; }
 bool AuroraItem::isGradient() const { return m_isGradient; }
 float AuroraItem::gradientFeather() const { return m_gradientFeather; }
+float AuroraItem::hueOffset() const { return m_hueOffset; }
 int AuroraItem::transitionMode() const { return static_cast<int>(m_mode); }
 
 void AuroraItem::setProgress(float progress) {
@@ -66,6 +67,14 @@ void AuroraItem::setGradientFeather(float feather) {
         emit gradientFeatherChanged();
         update();
     }
+}
+
+void AuroraItem::setHueOffset(float offset) {
+    if (m_hueOffset != offset) {
+        m_hueOffset = offset;
+        emit hueOffsetChanged();
+    }
+    update();
 }
 
 } // namespace AmbientAurora

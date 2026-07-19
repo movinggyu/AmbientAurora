@@ -12,7 +12,8 @@ Window {
     title: "Ambient Aurora"
 
     property bool isHubVisible: false
-    property bool sliderPanelOpen: false
+    property bool colorPanelOpen: false
+    property bool advancedPanelOpen: false
     property bool cameraPanelOpen: false
 
     // 0. OpenGL 배경 영역
@@ -25,12 +26,21 @@ Window {
 
 
     // 1. 패널 영역: 모든 패널을 불러와놓고 보이기/숨기기만 처리
-    SliderPanel {
-        id: sliderPanel
-        isOpen: root.sliderPanelOpen
+    ColorPanel {
+        id: colorPanel
+        isOpen: root.colorPanelOpen
 
         onClosePanel: {
-            root.sliderPanelOpen = false
+            root.colorPanelOpen = false
+        }
+    }
+
+    AdvancedPanel {
+        id: advancedPanel
+        isOpen: root.advancedPanelOpen
+
+        onClosePanel: {
+            root.advancedPanelOpen = false
         }
     }
 
@@ -39,14 +49,17 @@ Window {
         id: bottomBar
         isVisible: root.isHubVisible
 
-        onRequestSliderPanel: {
-            root.sliderPanelOpen = !root.sliderPanelOpen
+        onRequestColorPanel: {
+            root.colorPanelOpen = !root.colorPanelOpen
+        }
+        onRequestAdvancedPanel: {
+            root.advancedPanelOpen = !root.advancedPanelOpen
         }
         onRequestCameraPanel: {
             root.cameraPanelOpen = !root.cameraPanelOpen
         }
         onRequestClosePanel: {
-            root.sliderPanelOpen = false
+            root.colorPanelOpen = false
             root.cameraPanelOpen = false
             root.isHubVisible = false
         }
