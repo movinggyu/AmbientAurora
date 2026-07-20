@@ -200,7 +200,7 @@ GlassPanel {
             
             Slider {
                 id: deltaHueSlider
-                from: 10.0; to: 50.0; value: 10.0
+                from: 10.0; to: 100.0; value: 10.0
                 Layout.fillWidth: true
                 onValueChanged: {
                     if (typeof AppController !== "undefined") {
@@ -227,7 +227,7 @@ GlassPanel {
             
             Slider {
                 id: samplingRangeSlider
-                from: 5.0; to: 20.0; value: 5.0
+                from: 10.0; to: 100.0; value: 10.0
                 Layout.fillWidth: true
                 onValueChanged: {
                     if (typeof AppController !== "undefined") {
