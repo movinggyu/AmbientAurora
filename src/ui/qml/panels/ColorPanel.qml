@@ -1,8 +1,8 @@
+// qmllint disable
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "../" // GlassPanel.qml
-// qmllint disable
 
 GlassPanel {
     id: root
@@ -68,7 +68,7 @@ GlassPanel {
         // [인덱스 1] Dynamic 모드 패널
         ColumnLayout {
             id: dynamicPanel
-            spacing: 5
+            spacing: 10
             
             RowLayout{
                 Layout.fillWidth: true
