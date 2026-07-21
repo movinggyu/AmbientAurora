@@ -38,7 +38,6 @@ public:
     void setIsGradient(bool isGradient);
     void setGradientFeather(float feather);
     void setHueOffset(float offset);
-
 signals:
     void progressChanged();
     void transitionModeChanged();
@@ -49,7 +48,7 @@ signals:
 private:
     // 렌더링에 필요한 상태 데이터만 저장 (계산 로직 없음)
     float m_progress = 0.0f;
-    TransitionMode m_mode = TransitionMode::CENTER;
+    TransitionMode m_mode = TransitionMode::DISSOLVE;
     OKLCHColor m_oldColor;
     OKLCHColor m_newColor;
     bool m_isGradient = true;

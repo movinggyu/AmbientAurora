@@ -26,7 +26,7 @@ private:
     // 메인 스레드(AuroraItem)에서 계산된 최종 결과를 안전하게 담아둘 구조체
     struct RenderState {
         float progress = 0.0f;
-        TransitionMode mode = TransitionMode::CENTER;
+        TransitionMode mode = TransitionMode::DISSOLVE;
         OKLCHColor oldColor;
         OKLCHColor newColor;
         bool isGradient = true;

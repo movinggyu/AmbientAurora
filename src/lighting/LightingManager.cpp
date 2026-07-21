@@ -33,11 +33,6 @@ void LightingManager::changeMode(LightingModeType modeType) {
     if(m_activeMode) {
         // 이전 모드의 색상으로 시작
         m_activeMode->onActivate(prevColor);
-
-        // 새 모드의 다음 색상을 가져와 애니메이터 시작
-        // TODO: 여기 로직 이상함
-        OKLCHColor startColor = m_activeMode->getAndSetNextColor();
-        m_animator.startTransition(m_defaultHoldTime, m_defaultTransitionDuration); // 기본 전환시간으로 색 전환하며 모드 전환
     }
 }
 

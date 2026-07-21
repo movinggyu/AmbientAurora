@@ -18,13 +18,13 @@ public:
     OKLCHColor getAndSetNextColor() override;
 
     // 색상 설정 (슬라이더는 색상, 밝기, 채도를 사용하기 때문에 OKLCHColor를 사용, 구현 시 내부적으로 RGB로 변환하여 저장)
-    void setLightnessAndChroma(float lightness, float chroma) override {m_color.l = lightness; m_color.c = chroma;}
-    void setHue(float h);
-    void onActivate(const OKLCHColor& prevColor) override {m_color = prevColor;}
+    void setLightnessAndChroma(float lightness, float chroma) override {m_currentColor.l = lightness; m_currentColor.c = chroma;}
+    void setHue(float h) {m_currentColor.h = h;};
+    void onActivate(const OKLCHColor& prevColor) override {m_currentColor = prevColor;}
 
 private:
     // 현재 색상 저장
-    OKLCHColor m_color;
+    OKLCHColor m_currentColor;
 };
 
 } // namespace AmbientAurora

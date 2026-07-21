@@ -33,7 +33,12 @@ void AuroraItem::setProgress(float progress) {
 
 void AuroraItem::setRenderColor(const OKLCHColor& newColor) {
     // 1. 방지턱
-    if (m_oldColor.l == newColor.l && m_oldColor.c == newColor.c && m_oldColor.h == newColor.h) return;
+    if (m_newColor.l == newColor.l && m_newColor.c == newColor.c && m_newColor.h == newColor.h){
+        if (m_progress >= 1.0f) {
+            m_oldColor = m_newColor;
+        }
+        return;
+    }
 
     // 2. 그리기 요청
     m_oldColor = m_newColor;

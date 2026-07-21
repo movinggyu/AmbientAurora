@@ -28,6 +28,7 @@ public:
 
     OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }
+    AnimationState getState() const { return m_animator.getState(); }
 
 private:
     std::unique_ptr<StaticMode> m_staticMode;    // 정적 모드
