@@ -9,25 +9,25 @@ namespace AmbientAurora {
 class DynamicMode : public ILightingMode {
 public:
     DynamicMode();
-    DynamicMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
+    DynamicMode(const float startHue, const float endHue, float deltaHue,  const HSVColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
 
-    OKLCHColor getCurrentColor() const override;
-    OKLCHColor getAndSetNextColor() override;
+    HSVColor getCurrentColor() const override;
+    HSVColor getAndSetNextColor() override;
 
     bool isHueInRange(float hue) const;
-    void setLightnessAndChroma(float lightness, float chroma) override {m_currentColor.l = lightness; m_currentColor.c = chroma;}
+    void setSaturationAndValue(float saturation, float value) override {m_currentColor.v = value; m_currentColor.s = saturation;}
     void setStartHue(float hue);
     void setEndHue(float hue);
     void setTransitionMode(AmbientAurora::TransitionMode transitionMode);
     void setDeltaHue(float deltaHue);
     float calculateNextHue();
-    void onActivate(const OKLCHColor& prevColor) override {m_currentColor = prevColor;}
+    void onActivate(const HSVColor& prevColor) override {m_currentColor = prevColor;}
 
 private:
     float m_startHue; // 시작 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
     float m_endHue; // 끝 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
     float m_deltaHue; // 변화량
-    OKLCHColor m_currentColor; // 현재 색상(OKLCH인 이유는 Hue를 기반으로 색상을 계산하기 위해. RGB로 변환하여 반환)
+    HSVColor m_currentColor; // 현재 색상(OKLCH인 이유는 Hue를 기반으로 색상을 계산하기 위해. RGB로 변환하여 반환)
     AmbientAurora::TransitionMode m_transitionMode; // 디졸브, 와이프, 센터 등 트랜지션 방법
 
 };

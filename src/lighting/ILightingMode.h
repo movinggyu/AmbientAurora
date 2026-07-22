@@ -10,14 +10,14 @@ namespace AmbientAurora {
         virtual ~ILightingMode() = default;
 
         // 현재 색을 반환한다.
-        virtual OKLCHColor getCurrentColor() const = 0;
+        virtual HSVColor getCurrentColor() const = 0;
 
         // 다음 목표 색을 반환하고 현재 색상을 업데이트한다.
-        virtual OKLCHColor getAndSetNextColor() = 0;
+        virtual HSVColor getAndSetNextColor() = 0;
 
-        virtual void onActivate(const OKLCHColor& prevColor) = 0;
+        virtual void onActivate(const HSVColor& prevColor) = 0;
         
-        virtual void setLightnessAndChroma(float lightness, float chroma) = 0;
+        virtual void setSaturationAndValue(float saturation, float value) = 0;
     };
 } // namespace AmbientAurora
 

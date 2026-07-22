@@ -27,8 +27,8 @@ private:
     struct RenderState {
         float progress = 0.0f;
         TransitionMode mode = TransitionMode::DISSOLVE;
-        OKLCHColor oldColor;
-        OKLCHColor newColor;
+        HSVColor oldColor;
+        HSVColor newColor;
         bool isGradient = true;
         float gradientFeather = 0.5f;
         float hueOffset = 0.5f;

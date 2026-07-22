@@ -2,17 +2,17 @@
 
 namespace AmbientAurora {
 
-StaticMode::StaticMode() : m_currentColor(0.5f, 0.5f, 0.0f){ // 기본값: 빨간색
+StaticMode::StaticMode() : m_currentColor(0.0f, 0.9f, 0.8f){ // 기본값: 빨간색
 }
 
-StaticMode::StaticMode(const float hue, const OKLCHColor& prevColor) : m_currentColor(OKLCHColor(prevColor.l, prevColor.c, hue)) {
+StaticMode::StaticMode(const float hue, const HSVColor& prevColor) : m_currentColor(HSVColor(hue, prevColor.s, prevColor.v)) {
 }
 
-OKLCHColor StaticMode::getCurrentColor() const {
+HSVColor StaticMode::getCurrentColor() const {
     return m_currentColor;
 }
 
-OKLCHColor StaticMode::getAndSetNextColor() {
+HSVColor StaticMode::getAndSetNextColor() {
     return m_currentColor;
 }
 

@@ -25,8 +25,8 @@ public:
     float progress() const;
     float totalProgress() const;
     TransitionMode mode() const;
-    OKLCHColor oldColor() const;
-    OKLCHColor newColor() const;
+    HSVColor oldColor() const;
+    HSVColor newColor() const;
     bool isGradient() const;
     float gradientFeather() const;
     float hueOffset() const;
@@ -35,7 +35,7 @@ public:
     // --- Setters (LightingManager, ColorAnimator 등 비즈니스 로직에서 호출) ---
     void setProgress(float progress);
     void setTotalProgress(float totalProgress);
-    void setRenderColor(const OKLCHColor& newColor);
+    void setRenderColor(const HSVColor& newColor);
     void setTransitionMode(int mode);
     void setMode(TransitionMode mode);
     void setIsGradient(bool isGradient);
@@ -54,8 +54,8 @@ private:
     float m_progress = 0.0f;
     float m_totalProgress = 0.0f;
     TransitionMode m_mode = TransitionMode::DISSOLVE;
-    OKLCHColor m_oldColor;
-    OKLCHColor m_newColor;
+    HSVColor m_oldColor;
+    HSVColor m_newColor;
     bool m_isGradient = true;
     float m_gradientFeather = 0.5f;
     float m_hueOffset = 0.5f;

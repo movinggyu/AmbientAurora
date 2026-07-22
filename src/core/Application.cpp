@@ -54,15 +54,15 @@ void Application::setTransitionMode(int transitionMode) {
     }
 }
 
-void Application::applyColor(float l, float c, float h){
+void Application::applyColor(float s, float v, float h){
     if (m_lightingManager) {
-        m_lightingManager->updateActiveModeColor(l, c, h);
+        m_lightingManager->updateActiveModeColor(s, v, h);
     }
 }
 
-void Application::applyColor(float l, float c){
+void Application::applyColor(float s, float v){
     if (m_lightingManager) {
-        m_lightingManager->updateActiveModeColor(l, c);
+        m_lightingManager->updateActiveModeColor(s, v);
     }
 }
 

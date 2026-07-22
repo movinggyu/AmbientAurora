@@ -21,8 +21,8 @@ public:
     // oldColor: 이전 모드의 현재 색상
     // newColor: 새롭게 전환될 모드의 현재 색상
     void renderFrame(TransitionMode mode, float progress, 
-                     const OKLCHColor& oldColor, 
-                     const OKLCHColor& newColor,
+                     const HSVColor& oldColor, 
+                     const HSVColor& newColor,
                      bool isGradient,
                      float gradientFeather,
                      float hueOffset);

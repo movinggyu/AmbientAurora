@@ -11,17 +11,17 @@ namespace AmbientAurora {
         RGBColor(float red, float green, float blue) : r(red), g(green), b(blue) {}
     };
 
-    struct OKLCHColor { // OKLCH 색상 구조체 (L: 0.0f ~ 1.0f, C: 0.0f ~ 1.0f, H: 0.0f ~ 360.0f)
-        float l;
-        float c;
+    struct HSVColor { // HSV 색상 구조체
         float h;
+        float s;
+        float v;
 
-        OKLCHColor() : l(0.0f), c(0.0f), h(0.0f) {}
-        OKLCHColor(float lightness, float chroma, float hue) : l(lightness), c(chroma), h(hue) {}
+        HSVColor() : h(0.0f), s(0.0f), v(0.0f) {}
+        HSVColor(float hue, float saturation, float value) : h(hue), s(saturation), v(value) {}
     };
 
-    OKLCHColor RGBToOKLCH(const RGBColor& rgb); // RGB 색상을 OKLCH 색상으로 변환
-    RGBColor OKLCHToRGB(const OKLCHColor& oklch); // OKLCH 색상을 RGB 색상으로 변환
+    HSVColor RGBToHSV(const RGBColor& rgb); // RGB 색상을 OKLCH 색상으로 변환
+    RGBColor HSVToRGB(const HSVColor& hsv); // OKLCH 색상을 RGB 색상으로 변환
 } // namespace AmbientAurora
 
 #endif // AMBIENT_AURORA_COLOR_H

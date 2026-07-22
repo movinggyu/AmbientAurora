@@ -34,51 +34,30 @@ uniform vec3 u_OldColor; // 이전 색상
 uniform vec3 u_NewColor; // 새 색상
 uniform int u_Isgradient; // 0: 단색, 1: 그라데이션
 uniform float u_GradientFeather; // 그라데이션 경계의 부드러움 정도 (0.0 ~ 1.0)
-uniform float u_HueOffset; // 그라데이션 강도 (라디안 단위)
+uniform float u_HueOffset; // 그라데이션 강도 (도 단위)
 
-// OKLCH -> RGB 역변환 함수
-vec3 oklch2rgb(vec3 lch) {
-    float L = lch.x;
-    float C = lch.y;
-    float H = lch.z;
-    
-    float a = C * cos(H);
-    float b = C * sin(H);
-    
-    float l_ = L + 0.3963377774 * a + 0.2158037573 * b;
-    float m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-    float s_ = L - 0.0894841775 * a - 1.2914855480 * b;
-    
-    float l = l_ * l_ * l_;
-    float m = m_ * m_ * m_;
-    float s = s_ * s_ * s_;
-    
-    vec3 lC;
-    lC.r = +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s;
-    lC.g = -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s;
-    lC.b = -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s;
-    
-    // 감마 보정 다시 적용 (Linear -> sRGB)
-    vec3 c = mix(lC * 12.92, 1.055 * pow(lC, vec3(1.0 / 2.4)) - 0.055, step(0.0031308, lC));
-    return clamp(c, 0.0, 1.0);
+// HSV -> RGB 변환 함수
+vec3 hsv2rgb(vec3 c) {
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 p = abs(fract(c.xxx / 360.0 + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
 // Hue 지름길 보간 함수
 float mixHue(float h1, float h2, float t) {
-    float PI2 = 6.28318530717;
     float diff = h2 - h1;
     
     // 각도 차이를 [-PI, PI] 범위로 변환하여 지름길 탐색
-    diff = mod(diff + 3.14159265359, PI2) - 3.14159265359;
+    diff = mod(diff + 180.0, 360.0) - 180.0;
     
-    return mod(h1 + diff * t, PI2);
+    return mod(h1 + diff * t, 360.0);
 }
 
 void main()
 {
-    // 색상은 CPU에서 이미 OKLCH로 변환해 uniform으로 전달한다.
-    vec3 oldLCH = u_OldColor;
-    vec3 newLCH = u_NewColor;
+    // 색상은 CPU에서 이미 HSV로 변환해 uniform으로 전달한다.
+    vec3 oldHSV = u_OldColor;
+    vec3 newHSV = u_NewColor;
 
     if (u_Isgradient == 1) {
         // 1. 중심(0.5, 0.5)으로부터의 절대 거리 계산
@@ -104,9 +83,9 @@ void main()
         // 기존 모서리 색상(50%)과 세로 그라데이션(50%)을 반반씩 섞어 아치형 느낌을 냅니다.
         float combinedOffset = mix(finalCornerOffset, verticalGrad, 0.5); // 마지막 인자가 클수록 세로 그라데이션이 강해집니다.
 
-        // 최종 LCH의 Hue(z)값 적용
-        oldLCH.z = mod(oldLCH.z + mix(0.0, combinedOffset, centerMask), 6.28318530717);
-        newLCH.z = mod(newLCH.z + mix(0.0, combinedOffset, centerMask), 6.28318530717);
+        // 최종 HSV의 Hue(x)값 적용
+        oldHSV.x = mod(oldHSV.x + mix(0.0, combinedOffset, centerMask), 360.0);
+        newHSV.x = mod(newHSV.x + mix(0.0, combinedOffset, centerMask), 360.0);
     }
 
     float mask = 0.0; // 마스크 값 초기화
@@ -138,11 +117,11 @@ void main()
         mask = 0.0;
     }
 
-    float finalL = mix(oldLCH.x, newLCH.x, mask);
-    float finalC = mix(oldLCH.y, newLCH.y, mask);
-    float finalH = mixHue(oldLCH.z, newLCH.z, mask);
+    float finalH = mixHue(oldHSV.x, newHSV.x, mask);
+    float finalS = mix(oldHSV.y, newHSV.y, mask);
+    float finalV = mix(oldHSV.z, newHSV.z, mask);
 
-    vec3 finalRGB = oklch2rgb(vec3(finalL, finalC, finalH));
+    vec3 finalRGB = hsv2rgb(vec3(finalH, finalS, finalV));
     FragColor = vec4(finalRGB, 1.0);
 }
 )";
@@ -220,8 +199,8 @@ void ScreenRenderer::resize(int width, int height) {
 }
 
 void ScreenRenderer::renderFrame(TransitionMode mode, float progress, 
-                                  const OKLCHColor& oldColor, 
-                                  const OKLCHColor& newColor,
+                                  const HSVColor& oldColor, 
+                                  const HSVColor& newColor,
                                   bool isGradient,
                                   float gradientFeather,
                                   float hueOffset)
@@ -238,11 +217,11 @@ void ScreenRenderer::renderFrame(TransitionMode mode, float progress,
     glUniform1f(m_locProgress, progress);
 
     constexpr float kDegreesToRadians = 0.01745329251994329577f;
-    glUniform3f(m_locOldColor, oldColor.l, oldColor.c, oldColor.h * kDegreesToRadians);
-    glUniform3f(m_locNewColor, newColor.l, newColor.c, newColor.h * kDegreesToRadians);
+    glUniform3f(m_locOldColor, oldColor.h, oldColor.s, oldColor.v);
+    glUniform3f(m_locNewColor, newColor.h, newColor.s, newColor.v);
     glUniform1i(m_locIsgradient, isGradient ? 1 : 0);
     glUniform1f(m_locGradientFeather, gradientFeather);
-    glUniform1f(m_locHueOffset, hueOffset);
+    glUniform1f(m_locHueOffset, hueOffset * 90.0);
 
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);

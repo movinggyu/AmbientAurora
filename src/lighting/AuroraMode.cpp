@@ -14,10 +14,10 @@ namespace AmbientAurora {
         m_gen.seed(rd());
 
         // 초기 색상은 시작 Hue로 설정 (빨간색)
-        m_currentColor = OKLCHColor(0.5f, 0.5f, startHue);
+        m_currentColor = HSVColor(startHue, 0.9f, 0.8f);
     }
 
-    AuroraMode::AuroraMode(const float startHue, const float endHue, float samplingRange, const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode)
+    AuroraMode::AuroraMode(const float startHue, const float endHue, float samplingRange, const HSVColor& prevColor, const AmbientAurora::TransitionMode transitionMode)
         : startHue(startHue),
           endHue(endHue),
           samplingRange(samplingRange),
@@ -34,11 +34,11 @@ namespace AmbientAurora {
         }
     }
 
-    OKLCHColor AuroraMode::getCurrentColor() const {
+    HSVColor AuroraMode::getCurrentColor() const {
         return m_currentColor;
     }
 
-    OKLCHColor AuroraMode::getAndSetNextColor() {
+    HSVColor AuroraMode::getAndSetNextColor() {
         updateColor();
         return m_currentColor;
     }

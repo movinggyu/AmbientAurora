@@ -56,8 +56,8 @@ GlassPanel {
                 onValueChanged: {
                     if (typeof AppController !== "undefined") {
                         AppController.applyColor(
-                            lightnessSlider.value,
-                            chromaSlider.value,
+                            saturationSlider.value,
+                            valueSlider.value,
                             staticHueSlider.value
                         )
                     }
@@ -127,21 +127,21 @@ GlassPanel {
         Text { text: "Lightness"; color: "white"; font.pixelSize: 12}
         Item { Layout.fillWidth: true }
         Text {
-            text: Math.floor(lightnessSlider.value * 100) + "%"
+            text: Math.floor(valueSlider.value * 100) + "%"
             color: "white"
             Layout.alignment: Qt.AlignHCenter 
         }
     }
     
     Slider {
-        id: lightnessSlider
-        from: 0.0; to: 1.0; value: 0.5
+        id: valueSlider
+        from: 0.0; to: 1.0; value: 0.8
         Layout.fillWidth: true
         onValueChanged: {
             if (typeof AppController !== "undefined") {
                 AppController.applyColor(
-                    lightnessSlider.value,
-                    chromaSlider.value
+                    saturationSlider.value,
+                    valueSlider.value
                 )
             }
         }
@@ -149,24 +149,24 @@ GlassPanel {
 
     RowLayout{
         Layout.fillWidth: true
-        Text { text: "Chroma"; color: "white"; font.pixelSize: 12}
+        Text { text: "Saturation"; color: "white"; font.pixelSize: 12}
         Item { Layout.fillWidth: true }
         Text {
-            text: Math.floor(chromaSlider.value * 100) + "%"
+            text: Math.floor(saturationSlider.value * 100) + "%"
             color: "white"
             Layout.alignment: Qt.AlignHCenter 
         }
     }
     
     Slider {
-        id: chromaSlider
-        from: 0.0; to: 1.0; value: 0.5
+        id: saturationSlider
+        from: 0.0; to: 1.0; value: 0.9
         Layout.fillWidth: true
         onValueChanged: {
             if (typeof AppController !== "undefined") {
                 AppController.applyColor(
-                    lightnessSlider.value,
-                    chromaSlider.value
+                    saturationSlider.value,
+                    valueSlider.value
                 )
             }
         }

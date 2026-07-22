@@ -11,24 +11,24 @@ namespace AmbientAurora {
           m_deltaHue(1.0f), // 기본 변화량
           m_transitionMode(AmbientAurora::TransitionMode::DISSOLVE) // 기본 트랜지션 모드
     {
-        m_currentColor = OKLCHColor(0.5f, 0.5f, m_startHue); // 초기 현재 색상 설정
+        m_currentColor = HSVColor(m_startHue, 0.9f, 0.8f); // 초기 현재 색상 설정
     }
 
     // 생성자에서 시작 색상, 끝 색상, 변화량, 트랜지션 모드를 설정
-    DynamicMode::DynamicMode(const float startHue, const float endHue, float deltaHue,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode)
+    DynamicMode::DynamicMode(const float startHue, const float endHue, float deltaHue,  const HSVColor& prevColor, const AmbientAurora::TransitionMode transitionMode)
         : m_startHue(startHue),
           m_endHue(endHue),
           m_deltaHue(deltaHue),
           m_transitionMode(transitionMode)
     {
-        m_currentColor = OKLCHColor(prevColor.l, prevColor.c, m_startHue); // 초기 현재 색상 설정
+        m_currentColor = HSVColor(m_startHue, prevColor.s, prevColor.v); // 초기 현재 색상 설정
     }
 
-    OKLCHColor DynamicMode::getCurrentColor() const {
+    HSVColor DynamicMode::getCurrentColor() const {
         return m_currentColor;
     }
 
-    OKLCHColor DynamicMode::getAndSetNextColor() {
+    HSVColor DynamicMode::getAndSetNextColor() {
         m_currentColor.h = calculateNextHue();
         return m_currentColor;
     }

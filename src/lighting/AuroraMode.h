@@ -12,13 +12,13 @@ namespace AmbientAurora {
 class AuroraMode : public ILightingMode {
 public:
     AuroraMode();
-    AuroraMode(const float startHue, const float endHue, float samplingRange,  const OKLCHColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
+    AuroraMode(const float startHue, const float endHue, float samplingRange,  const HSVColor& prevColor, const AmbientAurora::TransitionMode transitionMode = AmbientAurora::TransitionMode::DISSOLVE);
 
 
-    OKLCHColor getCurrentColor() const override;
-    OKLCHColor getAndSetNextColor() override;
+    HSVColor getCurrentColor() const override;
+    HSVColor getAndSetNextColor() override;
 
-    void setLightnessAndChroma(float lightness, float chroma) override {m_currentColor.l = lightness; m_currentColor.c = chroma;}
+    void setSaturationAndValue(float saturation, float value) override {m_currentColor.v = value; m_currentColor.s = saturation;}
     bool isHueInRange(float hue) const;
     void setStartHue(float hue);
     void setEndHue(float hue);
@@ -26,13 +26,13 @@ public:
     void setTransitionMode(AmbientAurora::TransitionMode transitionMode);
     float calculateNextColor(); // 다음 색상을 계산
     void updateColor(); // m_currentColor을 업데이트
-    void onActivate(const OKLCHColor& prevColor) override {m_currentColor = prevColor;}
+    void onActivate(const HSVColor& prevColor) override {m_currentColor = prevColor;}
 
 private:
     float startHue; // 시작 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
     float endHue; // 끝 색상(Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
     float samplingRange; // 샘플링 범위 (Hue, 전환은 색상범위 내에서 하기 때문에 float로 저장)
-    OKLCHColor m_currentColor; // 현재 색상(OKLCH인 이유는 Hue를 기반으로 색상을 계산하기 위해. RGB로 변환하여 반환)
+    HSVColor m_currentColor; // 현재 색상(OKLCH인 이유는 Hue를 기반으로 색상을 계산하기 위해. RGB로 변환하여 반환)
     AmbientAurora::TransitionMode m_transitionMode; // 디졸브, 와이프, 센터 등 트랜지션 방법
     std::mt19937 m_gen; // 난수 생성기 초기화
 };

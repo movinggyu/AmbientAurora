@@ -6,8 +6,8 @@ namespace AmbientAurora {
 AuroraItem::AuroraItem(QQuickItem *parent)
     : QQuickFramebufferObject(parent) {
     // 초기 더미 색상 세팅 (초기 렌더링 시 검은 화면 방지)
-    m_oldColor = OKLCHColor(0.5f, 0.5f, 0.0f);
-    m_newColor = OKLCHColor(0.5f, 0.5f, 0.0f);
+    m_oldColor = HSVColor(0.0f, 0.9f, 0.8f);
+    m_newColor = HSVColor(0.0f, 0.9f, 0.8f);
 }
 
 QQuickFramebufferObject::Renderer *AuroraItem::createRenderer() const {
@@ -17,8 +17,8 @@ QQuickFramebufferObject::Renderer *AuroraItem::createRenderer() const {
 float AuroraItem::progress() const { return m_progress; }
 float AuroraItem::totalProgress() const { return m_totalProgress; }
 TransitionMode AuroraItem::mode() const { return m_mode; }
-OKLCHColor AuroraItem::oldColor() const { return m_oldColor; }
-OKLCHColor AuroraItem::newColor() const { return m_newColor; }
+HSVColor AuroraItem::oldColor() const { return m_oldColor; }
+HSVColor AuroraItem::newColor() const { return m_newColor; }
 bool AuroraItem::isGradient() const { return m_isGradient; }
 float AuroraItem::gradientFeather() const { return m_gradientFeather; }
 float AuroraItem::hueOffset() const { return m_hueOffset; }
@@ -41,9 +41,9 @@ void AuroraItem::setTotalProgress(float totalProgress) {
 }
 
 
-void AuroraItem::setRenderColor(const OKLCHColor& newColor) {
+void AuroraItem::setRenderColor(const HSVColor& newColor) {
     // 1. 방지턱
-    if (m_newColor.l == newColor.l && m_newColor.c == newColor.c && m_newColor.h == newColor.h){
+    if (m_newColor.h == newColor.h && m_newColor.s == newColor.s && m_newColor.v == newColor.v){
         if (m_progress >= 1.0f) {
             m_oldColor = m_newColor;
         }

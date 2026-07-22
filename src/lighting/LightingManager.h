@@ -20,14 +20,14 @@ public:
     // 메인 루프(Application)에서 매 프레임 호출할 핵심 루프
     void update(float deltaTime);
 
-    void updateActiveModeColor(float l, float c, float h);
-    void updateActiveModeColor(float l, float c);
+    void updateActiveModeColor(float s, float v, float h);
+    void updateActiveModeColor(float s, float v);
     void updateActiveModeColorRange(float startHue, float endHue);
     void updateActiveModeSamplingRange(float range);
     void updateActiveModeDeltaHue(float deltaHue);
     void updateUserTime(float totalTime, float transitionTime);
 
-    OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
+    HSVColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }
     float getTotalProgress() const { return m_animator.getTotalProgress(); }
     AnimationState getState() const { return m_animator.getState(); }

@@ -16,7 +16,7 @@ LightingManager::LightingManager():
 }
 
 void LightingManager::changeMode(LightingModeType modeType) {
-    OKLCHColor prevColor = m_activeMode->getCurrentColor();
+    HSVColor prevColor = m_activeMode->getCurrentColor();
     
     switch (modeType) {
         case LightingModeType::Static:
@@ -41,7 +41,7 @@ void LightingManager::update(float deltaTime) {
 
     if(m_animator.isFinished()) {
         // 애니메이터가 끝났다면, 활성 모드에서 다음 색상을 가져와 애니메이터 시작
-        OKLCHColor nextColor = m_activeMode->getAndSetNextColor();
+        HSVColor nextColor = m_activeMode->getAndSetNextColor();
         m_animator.startTransition(m_defaultTotalTime, m_defaultTransitionTime);
     }
 
@@ -49,19 +49,19 @@ void LightingManager::update(float deltaTime) {
     m_animator.update(deltaTime);
 }
 
-void LightingManager::updateActiveModeColor(float l, float c, float h) {
+void LightingManager::updateActiveModeColor(float s, float v, float h) {
     if(!m_activeMode) return;
 
-    m_activeMode->setLightnessAndChroma(l, c);
+    m_activeMode->setSaturationAndValue(s, v);
 
     auto staticMode = dynamic_cast<StaticMode*>(m_activeMode);
     if(staticMode) staticMode->setHue(h);
 }
 
-void LightingManager::updateActiveModeColor(float l, float c) {
+void LightingManager::updateActiveModeColor(float s, float v) {
     if(!m_activeMode) return;
 
-    m_activeMode->setLightnessAndChroma(l, c);
+    m_activeMode->setSaturationAndValue(s, v);
 }
 
 void LightingManager::updateActiveModeColorRange(float startHue, float endHue) {
