@@ -18,7 +18,17 @@ public:
     // 현재 애니레이터의 상태 확인
     AnimationState getState() const { return m_state; }
     bool isFinished() const { return m_state == AnimationState::IDLE; }
-    float getProgress() const { return (m_state == AnimationState::IDLE || m_transitionDuration <= 0.0f) ? 1.0f : std::min(1.0f, (m_elapsedTime / m_transitionDuration)); }
+    float getProgress() const {
+        return (m_state == AnimationState::IDLE || m_transitionDuration <= 0.0f) 
+            ? 1.0f 
+            : std::min(1.0f, (m_elapsedTime / m_transitionDuration)); 
+    }
+    float getTotalProgress() const {
+        if (m_state == AnimationState::IDLE || m_totalTime <= 0.0f) {
+            return 1.0f;
+        }
+        return std::min(1.0f, (m_elapsedTime / m_totalTime));
+    }
 
 private:
     float m_elapsedTime;         // 현재 구간에서 흘러간 시간

@@ -15,6 +15,7 @@ QQuickFramebufferObject::Renderer *AuroraItem::createRenderer() const {
 }
 
 float AuroraItem::progress() const { return m_progress; }
+float AuroraItem::totalProgress() const { return m_totalProgress; }
 TransitionMode AuroraItem::mode() const { return m_mode; }
 OKLCHColor AuroraItem::oldColor() const { return m_oldColor; }
 OKLCHColor AuroraItem::newColor() const { return m_newColor; }
@@ -30,6 +31,15 @@ void AuroraItem::setProgress(float progress) {
         update(); // 값이 변경되었을 때만 렌더링 스레드에 화면 갱신 요청
     }
 }
+
+void AuroraItem::setTotalProgress(float totalProgress) {
+    if (m_totalProgress != totalProgress) {
+        m_totalProgress = totalProgress;
+        emit totalProgressChanged();
+        update();
+    }
+}
+
 
 void AuroraItem::setRenderColor(const OKLCHColor& newColor) {
     // 1. 방지턱

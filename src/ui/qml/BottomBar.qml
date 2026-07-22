@@ -1,6 +1,8 @@
 // qmllint disable
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Shapes
+import QtQuick.Layouts
 
 Rectangle {
     id: root
@@ -17,6 +19,9 @@ Rectangle {
     property bool isVisible: false
     property int animationDuration: 300
     property var animationEasing: Easing.InOutQuad 
+
+    property real progressValue: 0.5
+    property color currentColor: "#ffffff"
 
     enabled: isVisible
     visible: opacity > 0
@@ -45,10 +50,77 @@ Rectangle {
     signal requestCameraPanel()
     signal requestClosePanel()
 
-    Row {
+    RowLayout {
         id: buttonRow
         anchors.centerIn: parent
         spacing: 30
+
+        Item {
+            id: colorIndicator
+            width: 36
+            height: 36
+            implicitWidth: 36
+            implicitHeight: 36
+            Layout.alignment: Qt.AlignVCenter
+            
+            Shape {
+                anchors.fill: parent
+                layer.enabled: true
+                layer.samples: 4 // 매끄러운 계단 현상 방지
+
+                ShapePath {
+                    strokeColor: Qt.rgba(1, 1, 1, 0.3) // 링 색상
+                    strokeWidth: 3
+                    fillColor: "transparent"
+                    capStyle: ShapePath.RoundCap
+
+                    PathAngleArc {
+                        centerX: colorIndicator.width / 2
+                        centerY: colorIndicator.height / 2
+                        radiusX: (colorIndicator.width - 4) / 2
+                        radiusY: (colorIndicator.height - 4) / 2
+                        startAngle: -90 // 12시 방향부터 시작
+                        sweepAngle: 360
+                    }
+                }
+            }
+
+            // 1. 바깥쪽 원형 프로그레스 링 (Outer Arc)
+            Shape {
+                anchors.fill: parent
+                layer.enabled: true
+                layer.samples: 4 // 매끄러운 계단 현상 방지
+
+                ShapePath {
+                    strokeColor: Qt.rgba(1, 1, 1, 0.8) // 링 색상
+                    strokeWidth: 3
+                    fillColor: "transparent"
+                    capStyle: ShapePath.RoundCap
+
+                    PathAngleArc {
+                        centerX: colorIndicator.width / 2
+                        centerY: colorIndicator.height / 2
+                        radiusX: (colorIndicator.width - 4) / 2
+                        radiusY: (colorIndicator.height - 4) / 2
+                        startAngle: -90 // 12시 방향부터 시작
+                        sweepAngle: 360 * Math.min(1.0, Math.max(0.0, root.progressValue))
+                    }
+                }
+            }
+
+            // 2. 안쪽 현재 색상 동그라미 (Inner Circle)
+            Rectangle {
+                width: 22
+                height: 22
+                radius: width / 2
+                color: root.currentColor
+                anchors.centerIn: parent
+
+                Behavior on color {
+                    ColorAnimation { duration: 150 }
+                }
+            }
+        }
 
         Button { 
             text: "닫기" 

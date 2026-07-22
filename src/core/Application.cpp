@@ -112,6 +112,7 @@ void Application::onTick() {
     if (m_auroraItem && m_lightingManager) {
         m_auroraItem->setRenderColor(m_lightingManager->getCurrentColor());
         m_auroraItem->setProgress(m_lightingManager->getProgress());
+        m_auroraItem->setTotalProgress(m_lightingManager->getTotalProgress());
     }
 }
 

@@ -29,6 +29,7 @@ public:
 
     OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }
+    float getTotalProgress() const { return m_animator.getTotalProgress(); }
     AnimationState getState() const { return m_animator.getState(); }
 
 private:

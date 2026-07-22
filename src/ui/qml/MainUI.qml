@@ -48,6 +48,8 @@ Window {
         id: bottomBar
         isVisible: root.isHubVisible
 
+        progressValue:backgroundRenderer.totalProgress
+
         onRequestColorPanel: {
             root.colorPanelOpen = !root.colorPanelOpen
         }
