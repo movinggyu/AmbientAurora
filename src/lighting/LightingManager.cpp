@@ -92,4 +92,9 @@ void LightingManager::updateActiveModeDeltaHue(float deltaHue) {
     }
 }
 
+void LightingManager::updateUserTime(float totalTime, float transitionTime) {
+    m_defaultTotalTime = totalTime;
+    m_defaultTransitionTime = transitionTime;
+}
+
 } // namespace AmbientAurora

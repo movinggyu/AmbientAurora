@@ -96,6 +96,12 @@ void Application::applyHueOffset(float offset){
     }
 }
 
+void Application::applyUserTime(float totalTime, float transitionTime){
+    if (m_lightingManager) {
+        m_lightingManager->updateUserTime(totalTime, transitionTime);
+    }
+}
+
 void Application::onTick() {
     float deltaTime = static_cast<float>(m_elapsedTimer.restart());
 

@@ -25,6 +25,7 @@ public:
     void updateActiveModeColorRange(float startHue, float endHue);
     void updateActiveModeSamplingRange(float range);
     void updateActiveModeDeltaHue(float deltaHue);
+    void updateUserTime(float totalTime, float transitionTime);
 
     OKLCHColor getCurrentColor() const { return m_activeMode->getCurrentColor(); }
     float getProgress() const { return m_animator.getProgress(); }

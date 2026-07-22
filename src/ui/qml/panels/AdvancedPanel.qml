@@ -51,4 +51,48 @@ GlassPanel {
             }
         }
     }
+
+    RowLayout{
+        Layout.fillWidth: true
+        Text { text: "Cycle Time"; color: "white"; font.pixelSize: 12}
+        Item { Layout.fillWidth: true }
+        Text {
+            text: (totalTimeSlider.value / 1000).toFixed(1) + "s"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter 
+        }
+    }
+    
+    Slider {
+        id: totalTimeSlider
+        from: 1000.0; to: 5000.0; value: 3000.0
+        Layout.fillWidth: true
+        onValueChanged: {
+            if (typeof AppController !== "undefined") {
+                AppController.applyUserTime(totalTimeSlider.value, transitionTimeSlider.value)
+            }
+        }
+    }
+
+    RowLayout{
+        Layout.fillWidth: true
+        Text { text: "Transition Time"; color: "white"; font.pixelSize: 12}
+        Item { Layout.fillWidth: true }
+        Text {
+            text: (transitionTimeSlider.value / 1000).toFixed(1) + "s"
+            color: "white"
+            Layout.alignment: Qt.AlignHCenter 
+        }
+    }
+    
+    Slider {
+        id: transitionTimeSlider
+        from: 1000.0; to: totalTimeSlider.value; value: 2000.0
+        Layout.fillWidth: true
+        onValueChanged: {
+            if (typeof AppController !== "undefined") {
+                AppController.applyUserTime(totalTimeSlider.value, transitionTimeSlider.value)
+            }
+        }
+    }
 }

@@ -34,6 +34,8 @@ public:
 
     Q_INVOKABLE void applyGradientFeather(float feather);
     Q_INVOKABLE void applyHueOffset(float offset);
+    
+    Q_INVOKABLE void applyUserTime(float totalTime, float transitionTime);
 
 private slots:
     void onTick();
