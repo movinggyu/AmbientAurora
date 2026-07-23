@@ -28,6 +28,14 @@ void Application::setAuroraItem(AuroraItem* item) {
 void Application::start() {
     // 앱 시작 시 기본 모드를 StaticMode로 설정
     m_lightingManager->changeMode(LightingModeType::Static);
+
+    // 실행 직후 최초 1회, LightingManager의 실제 설정값으로 AuroraItem 동기화
+    if (m_auroraItem && m_lightingManager) {
+        m_auroraItem->setRenderColor(m_lightingManager->getCurrentColor());
+        m_auroraItem->setProgress(1.0f);      // 초기 상태이므로 전환 완료 상태(1.0)로 설정
+        m_auroraItem->setTotalProgress(1.0f);
+    }
+
     m_elapsedTimer.start();
     m_timer->start(16);
 }

@@ -135,7 +135,7 @@ GlassPanel {
     
     Slider {
         id: valueSlider
-        from: 0.0; to: 1.0; value: 0.8
+        from: 0.0; to: 1.0; value: 0.9
         Layout.fillWidth: true
         onValueChanged: {
             if (typeof AppController !== "undefined") {
@@ -235,6 +235,25 @@ GlassPanel {
                     }
                 }
             }
+        }
+    }
+
+    Component.onCompleted: {
+        if (typeof AppController !== "undefined") {
+            // 1. Static 모드 색상 초기화 (Hue, Saturation, Value)
+            AppController.applyColor(
+                saturationSlider.value,
+                valueSlider.value,
+                staticHueSlider.value
+            )
+            // 2. Dynamic/Aurora 모드 색상 범위 초기화
+            AppController.applyColorRange(
+                startHueSlider.value,
+                endHueSlider.value
+            )
+            // 3. Dynamic deltaHue / Aurora samplingRange 초기화
+            AppController.applyDeltaHue(deltaHueSlider.value)
+            AppController.applySamplingRange(samplingRangeSlider.value)
         }
     }
 }

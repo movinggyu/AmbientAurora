@@ -6,7 +6,10 @@ import QtQuick.Layouts
 Rectangle {
     id: root
     radius: 20
-    color: Qt.rgba(1, 1, 1, 0.15) 
+
+    property color panelColor: Qt.rgba(1, 1, 1, 0.15)
+
+    color: root.panelColor
     border.color: Qt.rgba(1, 1, 1, 0.4)
     border.width: 1
     anchors.centerIn: parent

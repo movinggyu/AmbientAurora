@@ -8,6 +8,9 @@ AuroraItem::AuroraItem(QQuickItem *parent)
     // 초기 더미 색상 세팅 (초기 렌더링 시 검은 화면 방지)
     m_oldColor = HSVColor(0.0f, 0.9f, 0.8f);
     m_newColor = HSVColor(0.0f, 0.9f, 0.8f);
+
+    RGBColor rgb = HSVToRGB(m_newColor);
+    m_currentColor = QColor::fromRgbF(rgb.r, rgb.g, rgb.b);
 }
 
 QQuickFramebufferObject::Renderer *AuroraItem::createRenderer() const {
@@ -16,6 +19,7 @@ QQuickFramebufferObject::Renderer *AuroraItem::createRenderer() const {
 
 float AuroraItem::progress() const { return m_progress; }
 float AuroraItem::totalProgress() const { return m_totalProgress; }
+QColor AuroraItem::currentColor() const { return m_currentColor; }
 TransitionMode AuroraItem::mode() const { return m_mode; }
 HSVColor AuroraItem::oldColor() const { return m_oldColor; }
 HSVColor AuroraItem::newColor() const { return m_newColor; }
@@ -42,6 +46,11 @@ void AuroraItem::setTotalProgress(float totalProgress) {
 
 
 void AuroraItem::setRenderColor(const HSVColor& newColor) {
+    // QColor 변환 및 QML 신호 전송 (방지턱 이전에 실행하여 QML 수신 보장)
+    RGBColor rgb = HSVToRGB(m_newColor);
+    m_currentColor = QColor::fromRgbF(rgb.r, rgb.g, rgb.b);
+    emit currentColorChanged();
+
     // 1. 방지턱
     if (m_newColor.h == newColor.h && m_newColor.s == newColor.s && m_newColor.v == newColor.v){
         if (m_progress >= 1.0f) {

@@ -3,13 +3,17 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes
 import QtQuick.Layouts
+import QtQuick.Effects
 
 Rectangle {
     id: root
     implicitWidth: Math.max(10, buttonRow.implicitWidth + 80) // 최소 너비 10, 내부 콘텐츠에 따라 조정
     implicitHeight: Math.max(10, buttonRow.implicitHeight + 40) // 최소 높이 10, 내부 콘텐츠에 따라 조정
     radius: 100
-    color: Qt.rgba(1, 1, 1, 0.15) 
+
+    property color panelColor: Qt.rgba(1, 1, 1, 0.15)
+
+    color: root.panelColor
     border.color: Qt.rgba(1, 1, 1, 0.4)
     border.width: 1
     
@@ -117,7 +121,7 @@ Rectangle {
                 anchors.centerIn: parent
 
                 Behavior on color {
-                    ColorAnimation { duration: 150 }
+                    ColorAnimation { duration: 100 }
                 }
             }
         }

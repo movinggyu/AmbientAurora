@@ -12,6 +12,7 @@ class AuroraItem : public QQuickFramebufferObject {
     // QML에서 제어할 수 있도록 기본 프로퍼티 노출 (QML UI 연동용)
     Q_PROPERTY(float progress READ progress WRITE setProgress NOTIFY progressChanged)
     Q_PROPERTY(float totalProgress READ totalProgress WRITE setTotalProgress NOTIFY totalProgressChanged)
+    Q_PROPERTY(QColor currentColor READ currentColor NOTIFY currentColorChanged)
     Q_PROPERTY(int transitionMode READ transitionMode WRITE setTransitionMode NOTIFY transitionModeChanged)
     Q_PROPERTY(bool isGradient READ isGradient WRITE setIsGradient NOTIFY isGradientChanged)
     Q_PROPERTY(float gradientFeather READ gradientFeather WRITE setGradientFeather NOTIFY gradientFeatherChanged)
@@ -27,6 +28,7 @@ public:
     TransitionMode mode() const;
     HSVColor oldColor() const;
     HSVColor newColor() const;
+    QColor currentColor() const;
     bool isGradient() const;
     float gradientFeather() const;
     float hueOffset() const;
@@ -35,6 +37,7 @@ public:
     // --- Setters (LightingManager, ColorAnimator 등 비즈니스 로직에서 호출) ---
     void setProgress(float progress);
     void setTotalProgress(float totalProgress);
+    void setCurrentColor(const QColor& color);
     void setRenderColor(const HSVColor& newColor);
     void setTransitionMode(int mode);
     void setMode(TransitionMode mode);
@@ -44,6 +47,7 @@ public:
 signals:
     void progressChanged();
     void totalProgressChanged();
+    void currentColorChanged();
     void transitionModeChanged();
     void isGradientChanged();
     void gradientFeatherChanged();
@@ -54,6 +58,7 @@ private:
     float m_progress = 0.0f;
     float m_totalProgress = 0.0f;
     TransitionMode m_mode = TransitionMode::DISSOLVE;
+    QColor m_currentColor;
     HSVColor m_oldColor;
     HSVColor m_newColor;
     bool m_isGradient = true;

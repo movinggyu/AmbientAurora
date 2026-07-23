@@ -95,4 +95,12 @@ GlassPanel {
             }
         }
     }
+
+    Component.onCompleted: {
+        if (typeof AppController !== "undefined") {
+            AppController.applyGradientFeather(gradientFeatherSlider.value)
+            AppController.applyHueOffset(hueOffsetSlider.value)
+            AppController.applyUserTime(totalTimeSlider.value, transitionTimeSlider.value)
+        }
+    }
 }
