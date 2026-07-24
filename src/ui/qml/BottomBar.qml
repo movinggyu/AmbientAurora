@@ -12,6 +12,12 @@ Rectangle {
     radius: 100
 
     property color panelColor: Qt.rgba(1, 1, 1, 0.15)
+    Behavior on color {
+        ColorAnimation {
+            duration: root.glassDuration
+            easing.type: Easing.InOutQuad
+        }
+    }
 
     color: root.panelColor
     border.color: Qt.rgba(1, 1, 1, 0.4)
@@ -23,6 +29,7 @@ Rectangle {
     property bool isVisible: false
     property int animationDuration: 300
     property var animationEasing: Easing.InOutQuad 
+    property int glassDuration: 200
 
     property real progressValue: 0.5
     property color currentColor: "#ffffff"

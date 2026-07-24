@@ -6,21 +6,36 @@ import QtQuick.Layouts
 Rectangle {
     id: root
     radius: 20
+    clip: true
 
     property color panelColor: Qt.rgba(1, 1, 1, 0.15)
 
     color: root.panelColor
+    Behavior on color {
+        ColorAnimation {
+            duration: root.glassDuration
+            easing.type: Easing.InOutQuad
+        }
+    }
+    
     border.color: Qt.rgba(1, 1, 1, 0.4)
     border.width: 1
     anchors.centerIn: parent
     
     implicitWidth: Math.max(300, layout.implicitWidth + 40) 
     implicitHeight: Math.max(150, layout.implicitHeight + 40)
+    Behavior on implicitHeight{
+        NumberAnimation {
+            duration: 200
+            easing.type: root.animationEasing
+        }
+    }
 
     property string title: "None"
     property bool isOpen: false // 패널 열림 상태를 나타내는 프로퍼티
     property int animationDuration: 300
     property var animationEasing: Easing.InOutQuad
+    property int glassDuration: 200
 
     signal closePanel()
 

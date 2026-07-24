@@ -8,6 +8,9 @@ GlassPanel {
     id: root
     title: "Advanced Setting"
 
+    property alias totalTime: totalTimeSlider.value
+    property alias transitionTime: transitionTimeSlider.value
+
     RowLayout{
         Layout.fillWidth: true
         Text { text: "Gradient Feather"; color: "white"; font.pixelSize: 12}

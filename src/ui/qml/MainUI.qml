@@ -52,6 +52,7 @@ Window {
         id: colorPanel
         isOpen: root.colorPanelOpen
         panelColor: root.glassColor
+        glassDuration: advancedPanel.transitionTime
 
         onClosePanel: {
             root.colorPanelOpen = false
@@ -62,6 +63,7 @@ Window {
         id: advancedPanel
         isOpen: root.advancedPanelOpen
         panelColor: root.glassColor
+        glassDuration: advancedPanel.transitionTime
 
         onClosePanel: {
             root.advancedPanelOpen = false
@@ -73,6 +75,7 @@ Window {
         id: bottomBar
         isVisible: root.isHubVisible
         panelColor: root.glassColor
+        glassDuration: advancedPanel.transitionTime
 
         progressValue: backgroundRenderer.totalProgress
         currentColor: backgroundRenderer.currentColor
